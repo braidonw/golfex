@@ -1,4 +1,5 @@
 defmodule AppWeb.UserConfirmationLive do
+  @moduledoc false
   use AppWeb, :live_view
 
   alias App.Accounts

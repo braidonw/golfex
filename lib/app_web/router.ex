@@ -20,7 +20,15 @@ defmodule AppWeb.Router do
   scope "/", AppWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", DashboardLive, :index
+    live "/clubs", Clubs.IndexLive, :index
+
+    live_session :club do
+      scope "/clubs/:slug" do
+        live "/", Clubs.ShowLive, :show
+        live "/events/:id", Clubs.EventLive, :show
+      end
+    end
   end
 
   # Other scopes may use custom stacks.

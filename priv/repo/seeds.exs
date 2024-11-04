@@ -29,3 +29,6 @@ clubs = [
 for club <- clubs do
   %Club{} |> Club.changeset(club) |> Repo.insert()
 end
+
+user = %{email: "test@example.com", password: "password12345"}
+App.Accounts.register_user(user)

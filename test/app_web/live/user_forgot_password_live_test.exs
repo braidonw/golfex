@@ -1,8 +1,8 @@
 defmodule AppWeb.UserForgotPasswordLiveTest do
   use AppWeb.ConnCase
 
-  import Phoenix.LiveViewTest
   import App.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   alias App.Accounts
   alias App.Repo

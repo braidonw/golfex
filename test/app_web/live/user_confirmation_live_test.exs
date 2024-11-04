@@ -1,8 +1,8 @@
 defmodule AppWeb.UserConfirmationLiveTest do
   use AppWeb.ConnCase
 
-  import Phoenix.LiveViewTest
   import App.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   alias App.Accounts
   alias App.Repo
@@ -55,9 +55,7 @@ defmodule AppWeb.UserConfirmationLiveTest do
                "User confirmation link is invalid or it has expired"
 
       # when logged in
-      conn =
-        build_conn()
-        |> log_in_user(user)
+      conn = log_in_user(build_conn(), user)
 
       {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
 

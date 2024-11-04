@@ -1,8 +1,9 @@
 defmodule AppWeb.UserAuth do
+  @moduledoc false
   use AppWeb, :verified_routes
 
-  import Plug.Conn
   import Phoenix.Controller
+  import Plug.Conn
 
   alias App.Accounts
 

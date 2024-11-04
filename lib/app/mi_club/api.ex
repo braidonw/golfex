@@ -21,6 +21,6 @@ defmodule App.MiClub.Api do
   end
 
   defp current_date, do: DateTime.utc_now() |> DateTime.to_date() |> format_date()
-  defp to_date, do: DateTime.utc_now() |> DateTime.add(1000, :day) |> DateTime.to_date() |> format_date()
+  defp to_date, do: DateTime.utc_now() |> DateTime.add(365, :day) |> DateTime.to_date() |> format_date()
   defp format_date(date), do: "#{date.day}-#{date.month}-#{date.year}"
 end
