@@ -4,8 +4,8 @@ defmodule App.MiClub.BookingEvent do
   use App.Schema
 
   schema "miclub_booking_events" do
-    field :remote_id, :string
     belongs_to :club, App.MiClub.Club
+    field :remote_id, :string
     field :name, :string
     field :date, :date
     field :last_modified, :utc_datetime

@@ -1,18 +1,17 @@
 # App
 
-To start your Phoenix server:
+This app wraps the MiClub booking website used by golf courses.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+For many of the popular golf events, bookings open at a specific time ~10 days before the event. This app will allow users to book in for these events as soon as they open without having to go through the website. This means they will get to pick their preferred time.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Main use cases
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+1. View upcoming events.
+   View the list of upcoming events, with info about when they occur and the time the bookings open.
 
-## Learn more
+2. Book in for an event.
+   View an open event slot, and book in for it.
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+3. Schedule a booking for an event at a specific time in the future.
+   (Common) View an upcoming event, and schedule a booking for it at a specific time in the future.
+   This time should default to the time the bookings open, but be editable.

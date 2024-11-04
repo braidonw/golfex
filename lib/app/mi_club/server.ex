@@ -13,12 +13,13 @@ defmodule App.MiClub.Server do
         }
 
   def start_link(args) do
-    GenServer.start_link(__MODULE__, args, name: via_name(args[:name]))
+    GenServer.start_link(__MODULE__, args, name: via_name(args))
   end
 
-  def init(opts) do
+  def init(slug) do
+    opts = config(slug)
     base_url = Keyword.get(opts, :base_url)
-    req = [base_url: base_url] |> Req.new() |> Req.Request.put_new_header("cookie", "JSESSIONID=")
+    req = Req.new(base_url: base_url)
     state = %{req: req, username: Keyword.get(opts, :username), password: Keyword.get(opts, :password)}
     {:ok, state}
   end
@@ -50,10 +51,16 @@ defmodule App.MiClub.Server do
   defp via_name(name), do: {:via, Registry, {App.MiClub.Registry, name}}
 
   defp login(state) do
-    {:ok, resp} = Api.login(state.req, state.username, state.password)
-    set_cookies = Req.Response.get_header(resp, "set-cookie")
-    auth_cookie = set_cookies |> Enum.find(&String.contains?(&1, "JSESSIONID")) |> String.split(";") |> List.first()
-    req = Req.Request.put_header(state.req, "cookie", auth_cookie)
-    Map.put(state, :req, req)
+    with {:ok, resp} <- Api.login(state.req, state.username, state.password) do
+      set_cookies = Req.Response.get_header(resp, "set-cookie")
+      auth_cookie = set_cookies |> Enum.find(&String.contains?(&1, "JSESSIONID")) |> String.split(";") |> List.first()
+
+      Map.update(state, :req, Req.new(), &Req.Request.put_header(&1, "cookie", auth_cookie))
+    end
+  end
+
+  defp config(slug) do
+    config = Application.get_env(:app, :miclub)[slug]
+    [username: config[:username], password: config[:password], base_url: config[:base_url]]
   end
 end

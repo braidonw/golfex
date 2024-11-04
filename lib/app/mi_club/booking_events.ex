@@ -4,9 +4,10 @@ defmodule App.MiClub.BookingEvents do
   alias App.MiClub
   alias App.MiClub.BookingEvent
 
-  @spec sync_events(String.t()) :: {integer(), _} | {:error, term()}
+  @spec sync_events(String.t()) :: {integer(), term()} | {:error, term()}
   def sync_events(slug) do
-    with {:ok, club} <- fetch_club_by_slug(slug), {:ok, events} <- MiClub.Server.list_events(club.slug) do
+    with {:ok, club} <- fetch_club_by_slug(slug),
+         {:ok, events} <- MiClub.Server.list_events(slug) do
       events
       |> parse_events()
       |> Enum.filter(&is_valid_record?/1)
@@ -17,7 +18,7 @@ defmodule App.MiClub.BookingEvents do
 
   def fetch_club_by_slug(slug) do
     MiClub.Club
-    |> App.Repo.get_by(slug: slug)
+    |> App.Repo.get_by(slug: to_string(slug))
     |> case do
       nil -> {:error, :not_found}
       club -> {:ok, club}

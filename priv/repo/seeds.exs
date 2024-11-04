@@ -13,10 +13,19 @@
 alias App.MiClub.Club
 alias App.Repo
 
-club = %{
-  "name" => "NSW Golf Course",
-  "slug" => "nsw_gc",
-  "website" => "https://www.nswgolfclub.com.au"
-}
+clubs = [
+  %{
+    "name" => "NSW Golf Course",
+    "slug" => "nsw_gc",
+    "website" => "https://www.nswgolfclub.com.au"
+  },
+  %{
+    "name" => "The Ridge Golf Course",
+    "slug" => "ridge",
+    "website" => "https//theridgegolf.com.au"
+  }
+]
 
-%Club{} |> Club.changeset(club) |> Repo.insert()
+for club <- clubs do
+  %Club{} |> Club.changeset(club) |> Repo.insert()
+end
