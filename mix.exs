@@ -5,7 +5,7 @@ defmodule App.MixProject do
     [
       app: :app,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -52,6 +52,8 @@ defmodule App.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:req, "~> 0.5"},
+      {:curl_req, "~> 0.98.0"},
+      {:saxy, "~> 1.6"},
       {:styler, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false}
     ]
   end

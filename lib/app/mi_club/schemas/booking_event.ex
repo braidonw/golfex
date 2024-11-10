@@ -71,19 +71,7 @@ defmodule App.MiClub.BookingEvent do
       :is_male,
       :is_matchplay
     ])
-    |> validate_required([
-      :remote_id,
-      :name,
-      :date,
-      :availability,
-      :is_ballot,
-      :is_ballot_open,
-      :is_results,
-      :is_open,
-      :is_female,
-      :is_male,
-      :is_matchplay
-    ])
+    |> validate_required([])
     |> unique_constraint(:remote_id)
     |> foreign_key_constraint(:club_id)
   end
