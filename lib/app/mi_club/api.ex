@@ -50,20 +50,22 @@ defmodule App.MiClub.Api do
     user = Keyword.get(opts, :username)
     password = Keyword.get(opts, :password)
 
-    dbg(user)
-    dbg(password)
-
     response =
-      [base_url: Keyword.get(opts, :base_url)]
+      [
+        base_url: Keyword.get(opts, :base_url),
+        method: :post,
+        url: "/security/login.msp",
+        form: %{"user" => user, "password" => password, "action" => "login", "Submit" => "Login"},
+        user_agent:
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
+        redirect: false
+      ]
       |> Req.new()
       |> CurlReq.Plugin.attach()
-      |> Req.post(
-        url: "/security/login.msp",
-        form: dbg(%{user: user, password: password, action: "login", submit: "Login"})
-      )
+      |> Req.request()
 
     case response do
-      {:ok, %{status: 200} = resp} ->
+      {:ok, %{status: status} = resp} when status in [302] ->
         set_cookies = Req.Response.get_header(resp, "set-cookie")
 
         auth_cookie =
