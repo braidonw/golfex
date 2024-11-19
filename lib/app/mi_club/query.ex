@@ -11,4 +11,8 @@ defmodule App.MiClub.Query do
   def by_club(query, club_slug) do
     where(query, [club: club], club.slug == ^club_slug)
   end
+
+  def order_by_date(query) do
+    order_by(query, [booking_event: booking_event], asc: booking_event.date)
+  end
 end

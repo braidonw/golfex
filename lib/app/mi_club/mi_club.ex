@@ -17,31 +17,53 @@ defmodule App.MiClub do
 
   def refresh_event(slug, event_id) do
     with {:ok, club} <- fetch_club_by_slug(slug),
+         {:ok, existing_event} <- App.Repo.fetch_by(BookingEvent, remote_id: event_id),
          {:ok, token} <- Auth.get_or_fetch_cookie(club.id),
          {:ok, event} <- Api.get_event(slug, token, event_id) do
+      File.write("text.txt", event)
       parsed = App.MiClub.Api.XmlParser.parse_event(event)
+      dbg(parsed)
 
       # Create Ecto changesets and insert into database
-      event_changeset = BookingEvent.changeset(%BookingEvent{}, parsed)
-      {:ok, event} = Repo.insert(event_changeset)
+      event_changeset = BookingEvent.changeset(existing_event, parsed)
+
+      {:ok, event} =
+        Repo.insert(event_changeset,
+          on_conflict: {:replace_all_except, [:id, :inserted_at]},
+          conflict_target: [:remote_id]
+        )
 
       # Insert sections
       Enum.each(parsed.booking_sections, fn section ->
         section_params = Map.put(section, :booking_event_id, event.id)
         section_changeset = BookingSection.changeset(%BookingSection{}, section_params)
-        {:ok, db_section} = Repo.insert(section_changeset)
+
+        {:ok, db_section} =
+          Repo.insert(section_changeset,
+            on_conflict: {:replace_all_except, [:id, :remote_id, :inserted_at]},
+            conflict_target: [:remote_id]
+          )
 
         # Insert groups
         Enum.each(section.booking_groups, fn group ->
           group_params = Map.put(group, :booking_section_id, db_section.id)
           group_changeset = BookingGroup.changeset(%BookingGroup{}, group_params)
-          {:ok, db_group} = Repo.insert(group_changeset)
+
+          {:ok, db_group} =
+            Repo.insert(group_changeset,
+              on_conflict: {:replace_all_except, [:id, :remote_id, :inserted_at]},
+              conflict_target: :remote_id
+            )
 
           # Insert entries if any
           Enum.each(group.booking_entries, fn entry ->
             entry_params = Map.put(entry, :booking_group_id, db_group.id)
             entry_changeset = BookingEntry.changeset(%BookingEntry{}, entry_params)
-            Repo.insert(entry_changeset)
+
+            Repo.insert(entry_changeset,
+              on_conflict: {:replace_all_except, [:id, :remote_id, :inserted_at]},
+              conflict_target: :remote_id
+            )
           end)
         end)
       end)
@@ -116,7 +138,9 @@ defmodule App.MiClub do
     Repo.fetch(Club, id)
   end
 
+  def fetch_event(event_id), do: Repo.fetch(BookingEvent, event_id)
+
   def list_club_events(slug) do
-    Query.event_base() |> Query.by_club(slug) |> Repo.all()
+    Query.event_base() |> Query.by_club(slug) |> Query.order_by_date() |> Repo.all()
   end
 end

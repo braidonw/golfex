@@ -35,6 +35,7 @@ defmodule App.MiClub.BookingEvent do
     field :is_matchplay, :boolean
 
     has_many :booking_sections, App.MiClub.BookingSection
+    has_many :booking_groups, through: [:booking_sections, :booking_groups]
 
     timestamps()
   end

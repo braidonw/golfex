@@ -18,8 +18,8 @@ defmodule App.MiClub.BookingGroup do
     field :nine_holes, :boolean
     field :eighteen_holes, :boolean
 
-    belongs_to :booking_section, App.MiclubBookingSection
-    has_many :booking_entries, App.MiclubBookingEntry
+    belongs_to :booking_section, App.MiClub.BookingSection
+    has_many :booking_entries, App.MiClub.BookingEntry
 
     timestamps()
   end
@@ -45,19 +45,6 @@ defmodule App.MiClub.BookingGroup do
     ])
     |> validate_required([
       :remote_id,
-      :active,
-      :name,
-      :time,
-      :status_code,
-      :require_gender,
-      :require_golf_link,
-      :require_handicap,
-      :require_home_club,
-      :visitor_accepted,
-      :member_accepted,
-      :public_member_accepted,
-      :nine_holes,
-      :eighteen_holes,
       :booking_section_id
     ])
     |> unique_constraint(:remote_id)

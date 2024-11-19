@@ -1,0 +1,47 @@
+.show-event {
+    text-decoration: none;
+    color: inherit;
+    &:visited {
+        color: inherit;
+    }
+
+    .card:hover {
+        --card-background: color-mix(in srgb, #fff, black 8%);
+        transform: scale(1.01);
+    }
+
+    h3 {
+        line-height: 1;
+        margin-top: 0;
+    }
+
+    dl {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: var(--space-gutter);
+
+        & > div {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: subgrid;
+
+            dt {
+                font-weight: var(--font-weight-medium);
+            }
+        }
+    }
+}
+
+.event-details {
+    --grid-min-item-size: var(--space-3xl);
+
+    dt {
+        font-weight: bold;
+        font-size: var(--step--1);
+    }
+
+    dd {
+        margin-inline-start: 0;
+        font-weight: 200;
+    }
+}

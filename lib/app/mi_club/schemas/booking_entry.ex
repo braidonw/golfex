@@ -11,7 +11,7 @@ defmodule App.MiClub.BookingEntry do
     field :handicap, :float
     field :golf_link_no, :string
 
-    belongs_to :booking_group, App.MiclubBookingGroup
+    belongs_to :booking_group, App.MiClub.BookingGroup
 
     timestamps()
   end

@@ -1,0 +1,105 @@
+table {
+    border-collapse: collapse;
+    width: max(65rem, 100%);
+    table-layout: fixed;
+}
+
+th,
+caption {
+    text-align: start;
+}
+
+caption {
+    margin-block: 0.75rem;
+}
+
+thead th:not(:first-child),
+td {
+    text-align: end;
+}
+
+thead {
+    border-block-end: 2px solid;
+    background: whitesmoke;
+}
+
+tfoot {
+    border-block: 2px solid;
+    background: whitesmoke;
+}
+
+th,
+td {
+    border: 1px solid lightgrey;
+    padding: 0.25rem 0.75rem;
+    vertical-align: baseline;
+}
+
+th:first-child {
+    position: sticky;
+    inset-inline-start: 0;
+    border-inline-end: none;
+}
+
+tbody th {
+    background: white;
+}
+
+thead th,
+tfoot th {
+    background: whitesmoke;
+}
+
+thead th {
+    vertical-align: bottom;
+}
+
+td:first-of-type,
+:where(thead, tfoot) th:nth-child(2) {
+    border-inline-start: none;
+}
+
+th:first-of-type {
+    width: 10rem;
+}
+
+th:first-child::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    width: 1px;
+    height: 100%;
+    background: lightgrey;
+}
+
+/* For the shadow: https://adrianroselli.com/2020/01/fixed-table-headers.html */
+div[tabindex="0"][aria-labelledby][role="region"] {
+    background:
+        linear-gradient(to right, transparent 30%, rgba(255, 255, 255, 0)),
+        linear-gradient(to right, rgba(255, 255, 255, 0), white 70%) 0 100%,
+        radial-gradient(
+            farthest-side at 0% 50%,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0)
+        ),
+        radial-gradient(
+                farthest-side at 100% 50%,
+                rgba(0, 0, 0, 0.2),
+                rgba(0, 0, 0, 0)
+            )
+            0 100%;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-size:
+        4em 100%,
+        4em 100%,
+        1.4em 100%,
+        1.4em 100%;
+    background-position:
+        0 0,
+        100%,
+        0 0,
+        100%;
+    background-attachment: local, local, scroll, scroll;
+}

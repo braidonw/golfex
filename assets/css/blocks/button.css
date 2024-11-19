@@ -1,0 +1,40 @@
+.button {
+    /* Configuration */
+    --button-padding: 0.7em 1.2em;
+    --button-gap: 0.5em;
+    --button-bg: #342a21;
+    --button-color: #ffffff;
+    --button-hover-bg: #4b4b4a;
+    --button-hover-color: #ffffff;
+    --button-border-width: 3px;
+    --button-border-style: solid;
+    --button-border-color: var(--button-bg);
+    --button-radius: 0.5em;
+
+    /* Layout and spacing */
+    display: inline-flex;
+    align-items: center;
+    gap: var(--button-gap);
+    padding: var(--button-padding);
+
+    /* Colours */
+    background: var(--button-bg);
+    color: var(--button-color);
+
+    /* Stroke and radius */
+    border-width: var(--button-border-width);
+    border-style: var(--button-border-style);
+    border-color: var(--button-border-color);
+    border-radius: var(--button-radius);
+
+    /* Typography */
+    text-decoration: none;
+    font-weight: var(--button-font-weight, 700);
+    font-size: var(--button-font-size, 1em);
+    letter-spacing: 0.05ch;
+    font-family: sans-serif;
+    line-height: 1.1;
+
+    /* Interactive */
+    cursor: pointer;
+}
