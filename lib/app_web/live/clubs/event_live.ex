@@ -98,8 +98,8 @@ defmodule AppWeb.Clubs.EventLive do
     <section class="wrapper region">
       <h2>Booking Sections</h2>
       <ul>
-        <li :for={section <- @event.booking_groups}>
-          <.link class="show-section" navigate={~p"/"}><%= section.name %></.link>
+        <li :for={section <- @event.booking_sections}>
+          <h3><%= section.name %></h3>
         </li>
       </ul>
     </section>

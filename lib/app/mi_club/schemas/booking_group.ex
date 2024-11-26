@@ -5,7 +5,6 @@ defmodule App.MiClub.BookingGroup do
   schema "miclub_booking_groups" do
     field :remote_id, :string
     field :active, :string
-    field :name, :string
     field :time, :time
     field :status_code, :string
     field :require_gender, :boolean
@@ -29,7 +28,6 @@ defmodule App.MiClub.BookingGroup do
     |> cast(attrs, [
       :remote_id,
       :active,
-      :name,
       :time,
       :status_code,
       :require_gender,

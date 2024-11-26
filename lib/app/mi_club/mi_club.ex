@@ -23,8 +23,6 @@ defmodule App.MiClub do
       File.write("text.txt", event)
       parsed = App.MiClub.Api.XmlParser.parse_event(event)
 
-
-
       # Create Ecto changesets and insert into database
       event_changeset = BookingEvent.changeset(existing_event, parsed)
 

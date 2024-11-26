@@ -50,6 +50,9 @@ defmodule App.Repo.Migrations.AddMiclubEntries do
 
     create table(:miclub_booking_sections) do
       add :booking_event_id, references(:miclub_booking_events), null: false
+      add :name, :string, null: false
+      add :index, :integer, null: false
+      add :active, :boolean, null: false
       add :remote_id, :string, null: false
 
       timestamps()
@@ -61,7 +64,6 @@ defmodule App.Repo.Migrations.AddMiclubEntries do
       add :booking_section_id, references(:miclub_booking_sections), null: false
       add :remote_id, :string, null: false
       add :active, :string, null: true
-      add :name, :string, null: true
       add :time, :time, null: true
       add :status_code, :string, null: true
       add :require_gender, :boolean, null: true

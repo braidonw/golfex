@@ -234,11 +234,48 @@ defmodule App.MiClub.Api do
         {:ok, Map.put(state, :current_element, :last_modified_by_id)}
       end
 
+      def handle_event(:start_element, {"BookingSection", attributes}, state) do
+        section = %{
+          remote_id: find_attribute(attributes, "id"),
+          active: nil,
+          name: nil,
+          # Add index from attributes
+          index: find_attribute(attributes, "index"),
+          booking_groups: []
+        }
+
+        {:ok, Map.put(state, :current_section, section)}
+      end
+
+      def handle_event(:start_element, {"Index", _}, state) do
+        {:ok, Map.put(state, :current_element, :index)}
+      end
+
       def handle_event(:start_element, _element, state) do
         {:ok, state}
       end
 
+      def handle_event(:characters, text, %{current_element: :index, current_section: section} = state) do
+        index = String.to_integer(text)
+        updated_section = Map.put(section, :index, index)
+        {:ok, state |> Map.put(:current_section, updated_section) |> Map.delete(:current_element)}
+      end
+
+      def handle_event(:characters, text, %{current_element: :active} = state) do
+        active = text == "true"
+
+        # If we're in a section context, update the section
+        if Map.has_key?(state, :current_section) do
+          section = Map.put(state.current_section, :active, active)
+          {:ok, state |> Map.put(:current_section, section) |> Map.delete(:current_element)}
+        else
+          # Otherwise update the top level event
+          {:ok, state |> Map.put(:active, active) |> Map.delete(:current_element)}
+        end
+      end
+
       # Handle character data for BookingEntry fields
+
       def handle_event(:characters, text, %{current_element: :person_name, current_entry: entry} = state) do
         updated_entry = Map.put(entry, :person_name, text)
         {:ok, state |> Map.put(:current_entry, updated_entry) |> Map.delete(:current_element)}
