@@ -23,6 +23,11 @@ clubs = [
     "name" => "The Ridge Golf Course",
     "slug" => "ridge",
     "website" => "https//theridgegolf.com.au"
+  },
+  %{
+    "name" => "SVGA",
+    "slug" => "svga",
+    "website" => "https//svga.1golf.com.au"
   }
 ]
 

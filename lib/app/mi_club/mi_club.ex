@@ -22,7 +22,8 @@ defmodule App.MiClub do
          {:ok, event} <- Api.get_event(slug, token, event_id) do
       File.write("text.txt", event)
       parsed = App.MiClub.Api.XmlParser.parse_event(event)
-      dbg(parsed)
+
+
 
       # Create Ecto changesets and insert into database
       event_changeset = BookingEvent.changeset(existing_event, parsed)
@@ -30,7 +31,7 @@ defmodule App.MiClub do
       {:ok, event} =
         Repo.insert(event_changeset,
           on_conflict: {:replace_all_except, [:id, :inserted_at]},
-          conflict_target: [:remote_id]
+          conflict_target: [:club_id, :remote_id]
         )
 
       # Insert sections
@@ -82,7 +83,7 @@ defmodule App.MiClub do
 
           case %BookingEvent{club_id: club.id}
                |> BookingEvent.changeset(params)
-               |> Repo.insert(on_conflict: :replace_all, conflict_target: :remote_id) do
+               |> Repo.insert(on_conflict: :replace_all, conflict_target: [:club_id, :remote_id]) do
             {:ok, record} -> {:ok, [record | current]}
             {:error, changeset} -> {:error, changeset}
           end

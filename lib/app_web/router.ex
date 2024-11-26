@@ -20,10 +20,10 @@ defmodule AppWeb.Router do
   scope "/", AppWeb do
     pipe_through :browser
 
-    live "/", DashboardLive, :index
-    live "/clubs", Clubs.IndexLive, :index
-
     live_session :club do
+      live "/", DashboardLive, :index
+      live "/clubs", Clubs.IndexLive, :index
+
       scope "/clubs/:slug" do
         live "/", Clubs.ShowLive, :show
         live "/events/:id", Clubs.EventLive, :show

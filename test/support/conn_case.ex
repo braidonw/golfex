@@ -20,6 +20,7 @@ defmodule AppWeb.ConnCase do
   using do
     quote do
       use AppWeb, :verified_routes
+
       import AppWeb.ConnCase
       import Phoenix.ConnTest
       import Plug.Conn

@@ -27,6 +27,12 @@ config :app, :miclub,
     username: "3691",
     password: "Letsplaygolf4$s",
     base_url: "https://theridgegolf.com.au"
+  ],
+  svga: [
+    member_id: "3691",
+    username: "2457",
+    password: "jwh4cuv_ZFT4mjz8dqg",
+    base_url: "https://svga.1golf.com.au"
   ]
 
 if config_env() == :prod do

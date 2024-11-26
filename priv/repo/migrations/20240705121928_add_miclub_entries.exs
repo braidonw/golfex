@@ -46,7 +46,7 @@ defmodule App.Repo.Migrations.AddMiclubEntries do
       timestamps()
     end
 
-    create unique_index(:miclub_booking_events, [:remote_id])
+    create unique_index(:miclub_booking_events, [:club_id, :remote_id])
 
     create table(:miclub_booking_sections) do
       add :booking_event_id, references(:miclub_booking_events), null: false
