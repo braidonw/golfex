@@ -9,7 +9,7 @@ defmodule AppWeb.Clubs.IndexLive do
 
   def render(assigns) do
     ~H"""
-    <header>
+    <header class="wrapper">
       <ul class="breadcrumbs">
         <li><.link navigate="/">Home</.link></li>
         <li>Clubs</li>
@@ -18,7 +18,7 @@ defmodule AppWeb.Clubs.IndexLive do
       <h1>Clubs</h1>
     </header>
 
-    <section>
+    <section class="region wrapper">
       <h2>Clubs</h2>
 
       <ul>

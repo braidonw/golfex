@@ -23,7 +23,7 @@ end
 config :app, :miclub,
   nsw_gc: [member_id: "2150973", username: "366", password: "99X0Gw0XpI0C", base_url: "https://www.nswgolfclub.com.au"],
   ridge: [
-    member_id: "3691",
+    member_id: "7211989",
     username: "3691",
     password: "Letsplaygolf4$s",
     base_url: "https://theridgegolf.com.au"

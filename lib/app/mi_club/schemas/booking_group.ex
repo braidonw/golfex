@@ -4,7 +4,7 @@ defmodule App.MiClub.BookingGroup do
 
   schema "miclub_booking_groups" do
     field :remote_id, :string
-    field :active, :string
+    field :active, :boolean
     field :time, :time
     field :status_code, :string
     field :require_gender, :boolean
@@ -48,4 +48,10 @@ defmodule App.MiClub.BookingGroup do
     |> unique_constraint(:remote_id)
     |> foreign_key_constraint(:booking_section_id)
   end
+
+  def number_of_holes(%{nine_holes: true, eighteen_holes: false}), do: 9
+  def number_of_holes(%{nine_holes: false, eighteen_holes: true}), do: 18
+  def number_of_holes(%{nine_holes: _, eighteen_holes: _}), do: 18
+
+  def number_of_entries(%{booking_entries: entries}) when is_list(entries), do: length(entries)
 end

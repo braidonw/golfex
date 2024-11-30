@@ -70,3 +70,11 @@ Info about this implementation: https://piccalil.li/quick-tip/flow-utility/
 .flow > * + * {
     margin-top: var(--flow-space, 1em);
 }
+
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gutter, var(--space-m));
+    justify-content: var(--cluster-horizontal-alignment, flex-start);
+    align-items: var(--cluster-vertical-alignment, center);
+}

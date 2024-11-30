@@ -26,7 +26,14 @@ defmodule AppWeb.Router do
 
       scope "/clubs/:slug" do
         live "/", Clubs.ShowLive, :show
-        live "/events/:id", Clubs.EventLive, :show
+
+        scope "/events/:event_id" do
+          live "/", Clubs.EventLive, :show
+
+          scope "/booking-groups" do
+            live "/:booking_group_id", Clubs.BookingGroupLive, :show
+          end
+        end
       end
     end
   end

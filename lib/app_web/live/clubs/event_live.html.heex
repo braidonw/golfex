@@ -1,0 +1,120 @@
+<header class="wrapper">
+  <ul class="breadcrumbs">
+    <li><.link navigate="/">Home</.link></li>
+    <li><.link navigate="/clubs">Clubs</.link></li>
+    <li><.link navigate={"/clubs/#{@club.slug}"}><%= @club.name %></.link></li>
+    <li><%= @event.name %></li>
+  </ul>
+  <h1><%= @event.name %></h1>
+</header>
+
+<section class="region wrapper">
+  <h2>Event Details</h2>
+  <dl class="card grid event-details">
+    <div>
+      <dt>Date</dt>
+      <dd><%= @event.date %></dd>
+    </div>
+
+    <div>
+      <dt>Availability</dt>
+      <dd><%= @event.availability %></dd>
+    </div>
+
+    <div>
+      <dt>Status</dt>
+      <dd><%= @event.status_code_friendly %></dd>
+    </div>
+
+    <div>
+      <dt>Open</dt>
+      <dd><%= @event.is_open %></dd>
+    </div>
+
+    <div>
+      <dt>Matchplay</dt>
+      <dd><%= @event.is_matchplay %></dd>
+    </div>
+
+    <div>
+      <dt>Ballot</dt>
+      <dd><%= @event.is_ballot %></dd>
+    </div>
+
+    <div>
+      <dt>Ballot Open</dt>
+      <dd><%= @event.is_ballot_open %></dd>
+    </div>
+
+    <div>
+      <dt>Competition</dt>
+      <dd><%= @event.has_competition %></dd>
+    </div>
+
+    <div>
+      <dt>Male</dt>
+      <dd><%= @event.is_male %></dd>
+    </div>
+
+    <div>
+      <dt>Female</dt>
+      <dd><%= @event.is_female %></dd>
+    </div>
+
+    <div>
+      <dt>Results</dt>
+      <dd><%= @event.is_results %></dd>
+    </div>
+
+    <div>
+      <dt>Is Lottery</dt>
+      <dd><%= @event.is_lottery %></dd>
+    </div>
+
+    <div>
+      <dt>Remote ID</dt>
+      <dd><%= @event.remote_id %></dd>
+    </div>
+  </dl>
+</section>
+
+<section class="wrapper region">
+  <h2>Booking Sections</h2>
+  <ul role="list" class="flow">
+    <li :for={section <- @event.booking_sections} class="flow">
+      <h3><%= section.name %></h3>
+      <ul role="list" class="booking-group-wrapper flow">
+        <li
+          :for={group <- section.booking_groups}
+          class="card booking-group"
+          data-full={BookingGroup.number_of_entries(group) >= 4}
+        >
+          <div class="booking-group__info">
+            <h4><%= group.time %> | <%= BookingGroup.number_of_holes(group) %> holes</h4>
+
+            <%= if group.booking_entries != [] do %>
+              <div class="cluster booking-group__entries">
+                <div
+                  :for={entry <- group.booking_entries |> Enum.sort_by(& &1.index)}
+                  class="booking-group__entry"
+                >
+                  <h3><%= entry.person_name %></h3>
+                  <p><%= entry.handicap %> | <%= entry.gender || "-" %></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <button
+            class="button"
+            disabled={BookingGroup.number_of_entries(group) >= 4}
+            phx-click="book"
+            phx-value-group_id={group.remote_id}
+          >
+            Book
+          </button>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>

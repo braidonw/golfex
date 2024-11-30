@@ -1,9 +1,15 @@
 .card {
     --card-background: #fff;
-    --card-border: 1px solid #e0e0e0;
+    --card-border-: var(--card-border);
+    --card-border-width: 1px;
+    --card-border-color: #e0e0e0;
+    --card-border-style: solid;
+    --card-padding: var(--space-s);
 
     background: var(--card-background);
-    border: var(--card-border);
-    padding: var(--space-s);
+    border-color: var(--card-border-color);
+    border-style: var(--card-border-style);
+    border-width: var(--card-border-width);
+    padding: var(--card-padding);
     border-radius: var(--border-radius);
 }

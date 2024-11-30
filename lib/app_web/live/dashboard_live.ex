@@ -9,13 +9,11 @@ defmodule AppWeb.DashboardLive do
 
   def render(assigns) do
     ~H"""
-    <header>
-      <ul class="breadcrumbs"></ul>
-
+    <header class="wrapper">
       <h1>GolfEx</h1>
     </header>
 
-    <section>
+    <section class="wrapper region">
       <h2>Clubs</h2>
 
       <ul>

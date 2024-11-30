@@ -88,6 +88,26 @@ defmodule App.MiClub.Api do
     end
   end
 
+  def make_booking(slug, token, params) do
+    opts = config(slug)
+    cookie = "JSESSIONID=#{token}"
+
+    [base_url: Keyword.get(opts, :base_url), form: params]
+    |> Req.new()
+    |> Req.Request.put_header("cookie", cookie)
+    |> Req.post(url: "/members/Ajax")
+    |> dbg()
+    |> case do
+      {:ok, %{status: 401}} ->
+        {:ok, cookie} = Auth.get_cookie_by_token(token)
+        Auth.invalidate_cookie(cookie)
+
+      {:ok, %{status: 200, body: body}} ->
+        dbg(body)
+        {:ok, body}
+    end
+  end
+
   defp config(slug) do
     slug = String.to_existing_atom(slug)
     config = :app |> Application.get_env(:miclub) |> Keyword.get(slug)
@@ -264,13 +284,20 @@ defmodule App.MiClub.Api do
       def handle_event(:characters, text, %{current_element: :active} = state) do
         active = text == "true"
 
-        # If we're in a section context, update the section
-        if Map.has_key?(state, :current_section) do
-          section = Map.put(state.current_section, :active, active)
-          {:ok, state |> Map.put(:current_section, section) |> Map.delete(:current_element)}
-        else
+        cond do
+          # If we're in a group context, update the group
+          Map.has_key?(state, :current_group) ->
+            group = Map.put(state.current_group, :active, active)
+            {:ok, state |> Map.put(:current_group, group) |> Map.delete(:current_element)}
+
+          # If we're in a section context, update the section
+          Map.has_key?(state, :current_section) ->
+            section = Map.put(state.current_section, :active, active)
+            {:ok, state |> Map.put(:current_section, section) |> Map.delete(:current_element)}
+
           # Otherwise update the top level event
-          {:ok, state |> Map.put(:active, active) |> Map.delete(:current_element)}
+          true ->
+            {:ok, state |> Map.put(:active, active) |> Map.delete(:current_element)}
         end
       end
 

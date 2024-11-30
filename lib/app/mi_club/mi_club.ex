@@ -81,7 +81,10 @@ defmodule App.MiClub do
 
           case %BookingEvent{club_id: club.id}
                |> BookingEvent.changeset(params)
-               |> Repo.insert(on_conflict: :replace_all, conflict_target: [:club_id, :remote_id]) do
+               |> Repo.insert(
+                 on_conflict: {:replace_all_except, [:id, :inserted_at, :remote_id]},
+                 conflict_target: [:club_id, :remote_id]
+               ) do
             {:ok, record} -> {:ok, [record | current]}
             {:error, changeset} -> {:error, changeset}
           end

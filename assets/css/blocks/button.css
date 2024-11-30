@@ -38,3 +38,9 @@
     /* Interactive */
     cursor: pointer;
 }
+
+.button[disabled] {
+    --button-bg: #e0e0e0;
+    --button-color: #a0a0a0;
+    cursor: not-allowed;
+}

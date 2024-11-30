@@ -1,0 +1,21 @@
+<header class="wrapper">
+  <ul class="breadcrumbs">
+    <li><.link navigate="/">Home</.link></li>
+    <li><.link navigate="/clubs">Clubs</.link></li>
+    <li><.link navigate={"/clubs/#{@club.slug}"}><%= @club.name %></.link></li>
+    <li>
+      <.link navigate={"/clubs/#{@club.slug}/events/#{@event.id}"}><%= @event.name %></.link>
+    </li>
+    <li><%= @booking_group.time %></li>
+  </ul>
+  <h1><%= @booking_group.time %></h1>
+</header>
+
+<section class="region wrapper flow">
+  <h2>Entries</h2>
+  <ul>
+    <li :for={entry <- @booking_group.booking_entries}>
+      <h3><%= entry.person_name %></h3>
+    </li>
+  </ul>
+</section>
