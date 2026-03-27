@@ -74,6 +74,16 @@ defmodule Golfex.EventsTest do
     end
   end
 
+  describe "invalidate_events/1" do
+    test "marks all events for a club as stale", %{club: club} do
+      event_fixture(club)
+      refute Events.cache_stale?(club)
+
+      Events.invalidate_events(club)
+      assert Events.cache_stale?(club)
+    end
+  end
+
   describe "invalidate_event/1" do
     test "marks a specific event as stale", %{club: club} do
       event = event_fixture(club)

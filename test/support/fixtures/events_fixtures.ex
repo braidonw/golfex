@@ -1,13 +1,16 @@
 defmodule Golfex.EventsFixtures do
   alias Golfex.Events
+  alias Golfex.Events.Event
+  alias Golfex.Repo
 
   def event_fixture(club, attrs \\ %{}) do
     unique = System.unique_integer([:positive])
+    miclub_event_id = attrs[:miclub_event_id] || unique
 
     miclub_events = [
       Map.merge(
         %{
-          id: attrs[:miclub_event_id] || unique,
+          id: miclub_event_id,
           title: attrs[:title] || "Test Event #{unique}",
           event_date: attrs[:event_date] || Date.utc_today(),
           availability: attrs[:availability] || 10,
@@ -19,6 +22,6 @@ defmodule Golfex.EventsFixtures do
 
     {1, _} = Events.upsert_events(club, miclub_events)
 
-    Events.list_events_for_club(club) |> List.last()
+    Repo.get_by!(Event, club_id: club.id, miclub_event_id: miclub_event_id)
   end
 end
