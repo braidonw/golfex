@@ -12,8 +12,8 @@ defmodule Golfex.Application do
       Golfex.Repo,
       {DNSCluster, query: Application.get_env(:golfex, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Golfex.PubSub},
-      # Start a worker by calling: Golfex.Worker.start_link(arg)
-      # {Golfex.Worker, arg},
+      Golfex.Vault,
+      {Oban, Application.fetch_env!(:golfex, Oban)},
       # Start to serve requests, typically the last entry
       GolfexWeb.Endpoint
     ]

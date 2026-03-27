@@ -42,3 +42,8 @@ config :phoenix_live_view,
 # Sort query params output of verified routes for robust url comparisons
 config :phoenix,
   sort_verified_routes_query_params: true
+
+config :golfex, Oban, testing: :inline
+
+# Use Req.Test plug for MiClub HTTP client in tests
+config :golfex, :miclub_req_options, plug: {Req.Test, Golfex.MiClub.Client}

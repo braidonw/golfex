@@ -52,6 +52,11 @@ config :esbuild,
       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+  ],
+  golfex_css: [
+    args:
+      ~w(css/app.css --bundle --outdir=../priv/static/assets/css),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # Configure Elixir's Logger
@@ -61,6 +66,10 @@ config :logger, :default_formatter,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :golfex, Oban,
+  repo: Golfex.Repo,
+  queues: [bookings: 1]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

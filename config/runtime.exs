@@ -16,6 +16,15 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
+if config_env() in [:dev, :test] do
+  config :golfex, Golfex.Vault,
+    ciphers: [
+      default:
+        {Cloak.Ciphers.AES.GCM,
+         tag: "AES.GCM.V1", key: :crypto.strong_rand_bytes(32)}
+    ]
+end
+
 if System.get_env("PHX_SERVER") do
   config :golfex, GolfexWeb.Endpoint, server: true
 end
@@ -67,6 +76,15 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0, 0, 0, 0, 0}
     ],
     secret_key_base: secret_key_base
+
+  cloak_key =
+    System.get_env("CLOAK_KEY") ||
+      raise "environment variable CLOAK_KEY is missing"
+
+  config :golfex, Golfex.Vault,
+    ciphers: [
+      default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: Base.decode64!(cloak_key)}
+    ]
 
   # ## SSL Support
   #

@@ -58,7 +58,10 @@ defmodule Golfex.MixProject do
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:oban, "~> 2.18"},
+      {:cloak_ecto, "~> 1.3"},
+      {:sweet_xml, "~> 0.7"}
     ]
   end
 
@@ -75,9 +78,10 @@ defmodule Golfex.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["compile", "esbuild golfex"],
+      "assets.build": ["compile", "esbuild golfex", "esbuild golfex_css"],
       "assets.deploy": [
         "esbuild golfex --minify",
+        "esbuild golfex_css --minify",
         "phx.digest"
       ],
       precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]

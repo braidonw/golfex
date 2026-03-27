@@ -25,7 +25,8 @@ config :golfex, GolfexWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "o9b+DYzEw3CUVni8QWdjGZPf0Dlhc+4OphrjqK7wj/PCcJuSPU+FtxvrX4tIMhQv",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:golfex, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:golfex, ~w(--sourcemap=inline --watch)]},
+    esbuild_css: {Esbuild, :install_and_run, [:golfex_css, ~w(--watch)]}
   ]
 
 # ## SSL Support
