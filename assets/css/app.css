@@ -1,0 +1,32 @@
+/* Sugarcube Global Styles */
+@import "./styles/global/global.css";
+
+/* Compositions */
+@import "./styles/compositions/flow.css";
+@import "./styles/compositions/cluster.css";
+@import "./styles/compositions/grid.css";
+@import "./styles/compositions/repel.css";
+@import "./styles/compositions/sidebar.css";
+@import "./styles/compositions/switcher.css";
+@import "./styles/compositions/wrapper.css";
+
+/* Blocks */
+@import "./styles/blocks/prose.css";
+
+/* Utilities */
+@import "./styles/utilities/region.css";
+@import "./styles/utilities/visually-hidden.css";
+
+/* UI Components */
+@import "./components/ui/accordion/accordion.css";
+@import "./components/ui/alert/alert.css";
+@import "./components/ui/avatar/avatar.css";
+@import "./components/ui/badge/badge.css";
+@import "./components/ui/button/button.css";
+@import "./components/ui/card/card.css";
+@import "./components/ui/checkbox/checkbox.css";
+@import "./components/ui/dialog/dialog.css";
+@import "./components/ui/input/input.css";
+@import "./components/ui/radio-group/radio-group.css";
+@import "./components/ui/select/select.css";
+@import "./components/ui/switch/switch.css";
