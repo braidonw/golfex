@@ -6,6 +6,7 @@ config :golfex, Golfex.Repo,
   password: "postgres",
   hostname: "localhost",
   database: "golfex_dev",
+  port: 54321,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
