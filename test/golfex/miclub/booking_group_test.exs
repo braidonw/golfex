@@ -1,7 +1,7 @@
 defmodule Golfex.MiClub.BookingGroupTest do
   use ExUnit.Case, async: true
 
-  alias Golfex.MiClub.{BookingGroup, BookingEntry}
+  alias Golfex.MiClub.{BookingEntry, BookingGroup}
 
   describe "first_empty_entry/1" do
     test "returns first entry with no person_name" do
@@ -21,7 +21,7 @@ defmodule Golfex.MiClub.BookingGroupTest do
       group = %BookingGroup{
         id: 1,
         booking_entries: [
-          %BookingEntry{id: 100, index: 1, person_name: ""},
+          %BookingEntry{id: 100, index: 1, person_name: ""}
         ]
       }
 

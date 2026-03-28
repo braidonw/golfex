@@ -53,7 +53,8 @@ defmodule Golfex.Bookings.BookingWorker do
 
   defp resolve_row_id(booking, user_club) do
     with {:ok, booking_event} <- MiClub.get_event(user_club, booking.miclub_event_id),
-         {group, _section} <- BookingEvent.get_booking_group(booking_event, booking.miclub_group_id),
+         {group, _section} <-
+           BookingEvent.get_booking_group(booking_event, booking.miclub_group_id),
          {:ok, entry} <- BookingGroup.first_empty_entry(group) do
       {:ok, entry.id}
     else

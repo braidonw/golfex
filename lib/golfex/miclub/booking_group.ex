@@ -20,8 +20,8 @@ defmodule Golfex.MiClub.BookingGroup do
 
   def first_empty_entry(%__MODULE__{booking_entries: entries}) do
     case Enum.find(entries, fn entry ->
-      is_nil(entry.person_name) or entry.person_name == ""
-    end) do
+           is_nil(entry.person_name) or entry.person_name == ""
+         end) do
       nil -> :none
       entry -> {:ok, entry}
     end
