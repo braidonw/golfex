@@ -14,7 +14,7 @@ defmodule Golfex.EventsFixtures do
           title: attrs[:title] || "Test Event #{unique}",
           event_date: attrs[:event_date] || Date.utc_today(),
           availability: attrs[:availability] || 10,
-          is_open: attrs[:is_open] || true
+          is_open: Map.get(attrs, :is_open, true)
         },
         Map.drop(attrs, [:miclub_event_id, :title, :event_date, :availability, :is_open])
       )

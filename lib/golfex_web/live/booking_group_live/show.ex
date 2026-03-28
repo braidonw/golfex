@@ -28,8 +28,7 @@ defmodule GolfexWeb.BookingGroupLive.Show do
      |> assign(:group_id, group_id)
      |> assign(:group, nil)
      |> assign(:section, nil)
-     |> assign(:loading, true)
-     |> assign(:selected_row_id, nil)}
+     |> assign(:loading, true)}
   end
 
   @impl true
@@ -62,19 +61,21 @@ defmodule GolfexWeb.BookingGroupLive.Show do
   end
 
   @impl true
-  def handle_event("book_now", %{"row_id" => row_id}, socket) do
-    %{user_club: user_club, group_id: group_id, event: event} = socket.assigns
-    row_id = String.to_integer(row_id)
+  def handle_event("book_now", _params, socket) do
+    %{user_club: user_club, event: event, group_id: group_id} = socket.assigns
 
     socket =
-      case Bookings.book_now(user_club, group_id, row_id, user_club.member_id) do
-        {:ok, _result} ->
+      case Bookings.book_now(user_club, event.miclub_event_id, group_id) do
+        :ok ->
           Events.invalidate_event(event)
           send(self(), :load_group_detail)
 
           socket
           |> assign(:loading, true)
           |> put_flash(:info, "Booking successful!")
+
+        {:error, :no_empty_slots} ->
+          put_flash(socket, :error, "No empty slots available in this group.")
 
         {:error, reason} ->
           put_flash(socket, :error, "Booking failed: #{inspect(reason)}")
@@ -83,15 +84,9 @@ defmodule GolfexWeb.BookingGroupLive.Show do
     {:noreply, socket}
   end
 
-  def handle_event("select_row", %{"row_id" => row_id}, socket) do
-    {:noreply, assign(socket, :selected_row_id, String.to_integer(row_id))}
-  end
-
-  def handle_event("schedule", %{"scheduled_for" => scheduled_for, "row_id" => row_id}, socket) do
+  def handle_event("schedule", %{"scheduled_for" => scheduled_for}, socket) do
     %{user_club: user_club, event: event, group_id: group_id, current_scope: scope} =
       socket.assigns
-
-    row_id = String.to_integer(row_id)
 
     attrs = %{
       user_id: scope.user.id,
@@ -99,7 +94,6 @@ defmodule GolfexWeb.BookingGroupLive.Show do
       event_id: event.id,
       miclub_event_id: event.miclub_event_id,
       miclub_group_id: group_id,
-      miclub_row_id: row_id,
       miclub_member_id: user_club.member_id,
       scheduled_for: scheduled_for
     }
@@ -158,6 +152,12 @@ defmodule GolfexWeb.BookingGroupLive.Show do
               <dt>Handicap Required?</dt>
               <dd>{if @group.require_handicap, do: "Yes", else: "No"}</dd>
             </div>
+            <%= if @event.auto_open_date_time_display do %>
+              <div>
+                <dt>Opens for booking</dt>
+                <dd>{@event.auto_open_date_time_display}</dd>
+              </div>
+            <% end %>
           </dl>
 
           <h2 class="text-lg font-semibold mt-6">Entries</h2>
@@ -171,46 +171,65 @@ defmodule GolfexWeb.BookingGroupLive.Show do
             <:col :let={entry} label="Name">{entry.person_name || "—"}</:col>
             <:col :let={entry} label="Handicap">{entry.handicap || "—"}</:col>
             <:col :let={entry} label="Membership">{entry.membership_number || "—"}</:col>
-            <:action :let={entry}>
-              <button
-                phx-click="book_now"
-                phx-value-row_id={entry.id}
-                data-confirm="Book this slot now?"
-              >
-                Book
-              </button>
-            </:action>
-            <:action :let={entry}>
-              <button phx-click="select_row" phx-value-row_id={entry.id}>
-                Schedule
-              </button>
-            </:action>
           </.table>
 
-          <%= if @selected_row_id do %>
-            <div class="mt-6 p-4 border rounded">
-              <h3 class="text-base font-semibold mb-4">Schedule Booking</h3>
-              <form phx-submit="schedule">
-                <input type="hidden" name="row_id" value={@selected_row_id} />
-                <div class="mb-4">
-                  <label for="scheduled_for" class="block text-sm font-medium mb-1">
-                    Scheduled for
-                  </label>
-                  <input
-                    type="datetime-local"
-                    id="scheduled_for"
-                    name="scheduled_for"
-                    required
-                    class="rounded border-gray-300"
-                  />
-                </div>
-                <.button type="submit">Schedule Booking</.button>
-              </form>
-            </div>
-          <% end %>
+          <div class="mt-6">
+            <%= if @event.is_open do %>
+              <button
+                phx-click="book_now"
+                data-confirm="Book the first available slot now?"
+                class="rounded-lg bg-zinc-900 px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-700"
+              >
+                Book Now
+              </button>
+            <% else %>
+              <div class="p-4 border rounded">
+                <h3 class="text-base font-semibold mb-4">Schedule Booking</h3>
+                <form phx-submit="schedule">
+                  <div class="mb-4">
+                    <label for="scheduled_for" class="block text-sm font-medium mb-1">
+                      Scheduled for
+                    </label>
+                    <input
+                      type="datetime-local"
+                      id="scheduled_for"
+                      name="scheduled_for"
+                      value={format_schedule_default(@event.auto_open_date_time_display)}
+                      required
+                      class="rounded border-gray-300"
+                    />
+                  </div>
+                  <.button type="submit">Schedule Booking</.button>
+                </form>
+              </div>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     </div>
     """
+  end
+
+  # Attempt to convert autoOpenDateTimeDisplay (e.g. "15/01/2024 7:00 AM")
+  # into datetime-local format ("2024-01-15T07:00") for the input default value.
+  # Returns nil if parsing fails — the input will just be empty.
+  defp format_schedule_default(nil), do: nil
+
+  defp format_schedule_default(display_string) do
+    # MiClub format: "DD/MM/YYYY h:mm AM/PM"
+    case Regex.run(
+           ~r/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i,
+           display_string
+         ) do
+      [_, day, month, year, hour, minute, ampm] ->
+        hour = String.to_integer(hour)
+        hour = if String.upcase(ampm) == "PM" and hour != 12, do: hour + 12, else: hour
+        hour = if String.upcase(ampm) == "AM" and hour == 12, do: 0, else: hour
+
+        "#{year}-#{String.pad_leading(month, 2, "0")}-#{String.pad_leading(day, 2, "0")}T#{String.pad_leading(Integer.to_string(hour), 2, "0")}:#{minute}"
+
+      _ ->
+        nil
+    end
   end
 end
