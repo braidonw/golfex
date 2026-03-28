@@ -17,11 +17,9 @@ defmodule GolfexWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", GolfexWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-  end
+  # scope "/", GolfexWeb do
+  #   pipe_through :browser
+  # end
 
   # Other scopes may use custom stacks.
   # scope "/api", GolfexWeb do
@@ -52,6 +50,13 @@ defmodule GolfexWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{GolfexWeb.UserAuth, :require_authenticated}] do
+      live "/", DashboardLive, :index
+      live "/clubs", ClubLive.Index, :index
+      live "/clubs/new", ClubLive.Index, :new
+      live "/clubs/:club_id/events", EventLive.Index, :index
+      live "/clubs/:club_id/events/:event_id", EventLive.Show, :show
+      live "/clubs/:club_id/events/:event_id/groups/:group_id", BookingGroupLive.Show, :show
+      live "/bookings", BookingLive.Index, :index
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
@@ -64,7 +69,6 @@ defmodule GolfexWeb.Router do
 
     live_session :current_user,
       on_mount: [{GolfexWeb.UserAuth, :mount_current_scope}] do
-      live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new
     end
