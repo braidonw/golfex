@@ -38,3 +38,4 @@ npm-debug.log
 # Sugarcube generated files
 /assets/css/global/tokens.variables.gen.css
 
+.worktrees/
