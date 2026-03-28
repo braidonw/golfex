@@ -16,7 +16,18 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-if config_env() in [:dev, :test] do
+# Dev uses a stable key so encrypted credentials survive restarts.
+# Test uses a random key since credentials are never persisted across runs.
+if config_env() == :dev do
+  config :golfex, Golfex.Vault,
+    ciphers: [
+      default:
+        {Cloak.Ciphers.AES.GCM,
+         tag: "AES.GCM.V1", key: Base.decode64!("N2+VDWpNpbJjXjMFCZ2J+bRCLgQbR7qXIKm5ZL7ss2w=")}
+    ]
+end
+
+if config_env() == :test do
   config :golfex, Golfex.Vault,
     ciphers: [
       default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: :crypto.strong_rand_bytes(32)}

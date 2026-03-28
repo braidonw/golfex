@@ -48,3 +48,6 @@ config :golfex, Oban, testing: :inline
 
 # Use Req.Test plug for MiClub HTTP client in tests
 config :golfex, :miclub_req_options, plug: {Req.Test, Golfex.MiClub.Client}
+
+# Bypass the MiClub SessionStore in tests (Req.Test expectations are process-owned)
+config :golfex, :miclub_session_store, false

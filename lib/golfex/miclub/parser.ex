@@ -9,23 +9,23 @@ defmodule Golfex.MiClub.Parser do
         parsed =
           Enum.map(events, fn e ->
             %{
-              id: e["Id"],
-              title: e["Title"],
-              event_date: parse_date(e["EventDate"]),
-              availability: e["Availability"],
-              is_open: e["IsOpen"],
-              is_ballot: e["IsBallot"],
-              is_ballot_open: e["IsBallotOpen"],
-              is_lottery: e["IsLottery"],
-              has_competition: e["HasCompetition"],
-              is_matchplay: e["IsMatchplay"],
-              is_results: e["IsResults"],
-              event_status_code: e["EventStatusCode"],
-              event_status_code_friendly: e["EventStatusCodeFriendly"],
-              event_type_code: e["EventTypeCode"],
-              event_category_code: e["EventCategoryCode"],
-              event_time_code_friendly: e["EventTimeCodeFriendly"],
-              auto_open_date_time_display: e["AutoOpenDateTimeDisplay"]
+              id: e["bookingEventId"],
+              title: e["title"],
+              event_date: parse_date(e["eventDate"]),
+              availability: e["availability"],
+              is_open: e["isOpen"],
+              is_ballot: e["isBallot"],
+              is_ballot_open: e["isBallotOpen"],
+              is_lottery: e["isLottery"],
+              has_competition: e["hasCompetition"],
+              is_matchplay: e["isMatchplay"],
+              is_results: e["isResults"],
+              event_status_code: e["eventStatusCode"],
+              event_status_code_friendly: e["eventStatusCodeFriendly"],
+              event_type_code: e["eventTypeCode"],
+              event_category_code: e["eventCategoryCode"],
+              event_time_code_friendly: e["eventTimeCodeFriendly"],
+              auto_open_date_time_display: e["autoOpenDateTimeDisplay"]
             }
           end)
 
@@ -142,9 +142,16 @@ defmodule Golfex.MiClub.Parser do
   defp parse_date(nil), do: nil
 
   defp parse_date(date_string) do
-    case NaiveDateTime.from_iso8601(date_string) do
-      {:ok, ndt} -> NaiveDateTime.to_date(ndt)
-      _ -> nil
+    case Date.from_iso8601(date_string) do
+      {:ok, date} ->
+        date
+
+      _ ->
+        # Fallback: try parsing as datetime (e.g. "2024-01-15T00:00:00")
+        case NaiveDateTime.from_iso8601(date_string) do
+          {:ok, ndt} -> NaiveDateTime.to_date(ndt)
+          _ -> nil
+        end
     end
   end
 end

@@ -9,22 +9,22 @@ defmodule Golfex.MiClubTest do
     events_response = fn conn ->
       Req.Test.json(conn, [
         %{
-          "Id" => 1,
-          "Title" => "Saturday Comp",
-          "EventDate" => "2024-01-15T00:00:00",
-          "Availability" => 24,
-          "IsOpen" => true,
-          "IsBallot" => false,
-          "IsBallotOpen" => false,
-          "IsLottery" => false,
-          "HasCompetition" => true,
-          "IsMatchplay" => false,
-          "IsResults" => false,
-          "EventStatusCode" => 1,
-          "EventStatusCodeFriendly" => "Open",
-          "EventTypeCode" => 2,
-          "EventCategoryCode" => 3,
-          "EventTimeCodeFriendly" => "AM"
+          "bookingEventId" => 1,
+          "title" => "Saturday Comp",
+          "eventDate" => "2024-01-15",
+          "availability" => 24,
+          "isOpen" => true,
+          "isBallot" => false,
+          "isBallotOpen" => false,
+          "isLottery" => false,
+          "hasCompetition" => true,
+          "isMatchplay" => false,
+          "isResults" => false,
+          "eventStatusCode" => 1,
+          "eventStatusCodeFriendly" => "Open",
+          "eventTypeCode" => 2,
+          "eventCategoryCode" => 3,
+          "eventTimeCodeFriendly" => "AM"
         }
       ])
     end
@@ -93,16 +93,22 @@ defmodule Golfex.MiClubTest do
     }
   end
 
+  defp route_request(conn, ctx) do
+    case {conn.method, conn.request_path} do
+      {_, "/security/login.msp"} -> ctx.login_response.(conn)
+      {"GET", "/spring/bookings/events/between/" <> _} -> ctx.events_response.(conn)
+      {"GET", "/spring/bookings/events/" <> _} -> ctx.event_detail_response.(conn)
+      {"POST", "/members/Ajax"} -> ctx.booking_response.(conn)
+    end
+  end
+
   setup :stub_miclub_responses
 
   describe "list_events/1" do
     test "fetches and parses events from MiClub", ctx do
-      # login + get_events = 2 requests
-      Req.Test.expect(Golfex.MiClub.Client, 2, fn conn ->
-        case conn.request_path do
-          "/security/login.msp" -> ctx.login_response.(conn)
-          "/spring/bookings/events/between/" <> _ -> ctx.events_response.(conn)
-        end
+      # GET login page + POST login + GET events = 3 requests
+      Req.Test.expect(Golfex.MiClub.Client, 3, fn conn ->
+        route_request(conn, ctx)
       end)
 
       assert {:ok, [event]} = MiClub.list_events(user_club())
@@ -113,11 +119,8 @@ defmodule Golfex.MiClubTest do
 
   describe "get_event/2" do
     test "fetches and parses event detail from MiClub", ctx do
-      Req.Test.expect(Golfex.MiClub.Client, 2, fn conn ->
-        case conn.request_path do
-          "/security/login.msp" -> ctx.login_response.(conn)
-          "/spring/bookings/events/" <> _ -> ctx.event_detail_response.(conn)
-        end
+      Req.Test.expect(Golfex.MiClub.Client, 3, fn conn ->
+        route_request(conn, ctx)
       end)
 
       assert {:ok, event} = MiClub.get_event(user_club(), 1)
@@ -128,24 +131,22 @@ defmodule Golfex.MiClubTest do
 
   describe "book/4" do
     test "executes a booking via MiClub", ctx do
-      Req.Test.expect(Golfex.MiClub.Client, 2, fn conn ->
-        case conn.request_path do
-          "/security/login.msp" -> ctx.login_response.(conn)
-          "/members/Ajax" -> ctx.booking_response.(conn)
-        end
+      Req.Test.expect(Golfex.MiClub.Client, 3, fn conn ->
+        route_request(conn, ctx)
       end)
 
       assert :ok = MiClub.book(user_club(), 10, 200, "12345")
     end
 
     test "returns error when booking fails", ctx do
-      Req.Test.expect(Golfex.MiClub.Client, 2, fn conn ->
-        case conn.request_path do
-          "/security/login.msp" ->
-            ctx.login_response.(conn)
+      error_booking = fn conn ->
+        Req.Test.text(conn, "<Error><ErrorText>Booking is full</ErrorText></Error>")
+      end
 
-          "/members/Ajax" ->
-            Req.Test.text(conn, "<Error><ErrorText>Booking is full</ErrorText></Error>")
+      Req.Test.expect(Golfex.MiClub.Client, 3, fn conn ->
+        case {conn.method, conn.request_path} do
+          {_, "/security/login.msp"} -> ctx.login_response.(conn)
+          {"POST", "/members/Ajax"} -> error_booking.(conn)
         end
       end)
 

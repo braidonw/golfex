@@ -13,6 +13,7 @@ defmodule Golfex.Application do
       {DNSCluster, query: Application.get_env(:golfex, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Golfex.PubSub},
       Golfex.Vault,
+      Golfex.MiClub.SessionStore,
       {Oban, Application.fetch_env!(:golfex, Oban)},
       # Start to serve requests, typically the last entry
       GolfexWeb.Endpoint

@@ -62,7 +62,8 @@ defmodule Golfex.MixProject do
       {:bandit, "~> 1.5"},
       {:oban, "~> 2.18"},
       {:cloak_ecto, "~> 1.3"},
-      {:sweet_xml, "~> 0.7"}
+      {:sweet_xml, "~> 0.7"},
+      {:http_cookie, "~> 0.9.1"}
     ]
   end
 

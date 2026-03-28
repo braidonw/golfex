@@ -8,22 +8,22 @@ defmodule Golfex.MiClub.ParserTest do
       json = """
       [
         {
-          "Id": 100,
-          "EventDate": "2024-01-15T00:00:00",
-          "Title": "Saturday Comp",
-          "Availability": 24,
-          "IsOpen": true,
-          "IsBallot": false,
-          "IsBallotOpen": false,
-          "IsLottery": false,
-          "HasCompetition": true,
-          "IsMatchplay": false,
-          "IsResults": false,
-          "EventStatusCode": 1,
-          "EventStatusCodeFriendly": "Open",
-          "EventTypeCode": 2,
-          "EventCategoryCode": 3,
-          "EventTimeCodeFriendly": "AM"
+          "bookingEventId": 100,
+          "eventDate": "2024-01-15",
+          "title": "Saturday Comp",
+          "availability": 24,
+          "isOpen": true,
+          "isBallot": false,
+          "isBallotOpen": false,
+          "isLottery": false,
+          "hasCompetition": true,
+          "isMatchplay": false,
+          "isResults": false,
+          "eventStatusCode": 1,
+          "eventStatusCodeFriendly": "Open",
+          "eventTypeCode": 2,
+          "eventCategoryCode": 3,
+          "eventTimeCodeFriendly": "AM"
         }
       ]
       """
