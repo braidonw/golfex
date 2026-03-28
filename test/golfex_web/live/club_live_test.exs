@@ -31,13 +31,15 @@ defmodule GolfexWeb.ClubLiveTest do
 
       result =
         lv
-        |> form("#club-form", club: %{
-          name: "New Test Club",
-          base_url: "https://newtestclub.com.au",
-          member_id: "99999",
-          username: "newuser",
-          password: "newpass"
-        })
+        |> form("#club-form",
+          club: %{
+            name: "New Test Club",
+            base_url: "https://newtestclub.com.au",
+            member_id: "99999",
+            username: "newuser",
+            password: "newpass"
+          }
+        )
         |> render_submit()
 
       assert {:error, {:live_redirect, %{to: "/clubs"}}} = result
@@ -65,7 +67,7 @@ defmodule GolfexWeb.ClubLiveTest do
       assert html =~ "Club To Remove"
 
       lv
-      |> element("[phx-click=delete][phx-value-id=#{user_club.id}]")
+      |> element(~s([phx-click="delete"][phx-value-id="#{user_club.id}"]))
       |> render_click()
 
       refute render(lv) =~ "Club To Remove"
