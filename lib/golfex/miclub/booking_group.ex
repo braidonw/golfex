@@ -17,4 +17,13 @@ defmodule Golfex.MiClub.BookingGroup do
   def holes(%__MODULE__{nine_holes: true}), do: 9
   def holes(%__MODULE__{eighteen_holes: true}), do: 18
   def holes(_), do: nil
+
+  def first_empty_entry(%__MODULE__{booking_entries: entries}) do
+    case Enum.find(entries, fn entry ->
+      is_nil(entry.person_name) or entry.person_name == ""
+    end) do
+      nil -> :none
+      entry -> {:ok, entry}
+    end
+  end
 end
