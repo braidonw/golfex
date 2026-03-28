@@ -48,23 +48,23 @@ defmodule Golfex.MiClub.ParserTest do
     test "parses XML event detail with sections, groups, and entries" do
       xml = """
       <?xml version="1.0" encoding="utf-8"?>
-      <BookingEvent>
-        <Active>true</Active>
-        <Id>100</Id>
+      <BookingEvent id="100">
+        <active>true</active>
+        <id>100</id>
         <Date>2024-01-15T07:00:00</Date>
         <Name>Saturday Comp</Name>
-        <LastModified>2024-01-10T12:00:00</LastModified>
+        <lastModified>2024-01-10T12:00:00</lastModified>
         <BookingSections>
-          <BookingSection>
-            <Id>1</Id>
-            <Active>true</Active>
+          <BookingSection id="1">
+            <id>1</id>
+            <active>true</active>
             <Name>Morning</Name>
             <BookingGroups>
-              <BookingGroup>
-                <Id>10</Id>
+              <BookingGroup id="10" size="4">
+                <id>10</id>
                 <Time>07:00</Time>
                 <StatusCode>0</StatusCode>
-                <Active>true</Active>
+                <active>true</active>
                 <RequireHandicap>true</RequireHandicap>
                 <RequireGolfLink>false</RequireGolfLink>
                 <VisitorAccepted>false</VisitorAccepted>
@@ -73,10 +73,7 @@ defmodule Golfex.MiClub.ParserTest do
                 <NineHoles>false</NineHoles>
                 <EighteenHoles>true</EighteenHoles>
                 <BookingEntries>
-                  <BookingEntry>
-                    <Id>200</Id>
-                    <Type>member</Type>
-                    <Index>1</Index>
+                  <BookingEntry id="200" type="member" index="1">
                     <PersonName>John Smith</PersonName>
                     <MembershipNumber>M001</MembershipNumber>
                     <Handicap>15.5</Handicap>

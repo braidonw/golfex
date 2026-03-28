@@ -16,8 +16,8 @@ defmodule Golfex.MiClub do
 
   def get_event(user_club, event_id) do
     with_session(user_club, fn req, jar ->
-      with {:ok, body} <- Client.get_event(req, jar, event_id),
-           {:ok, event} <- Parser.parse_event_detail(body) do
+      with {:ok, body} <- Client.get_event(req, jar, event_id) |> dbg(),
+           {:ok, event} <- Parser.parse_event_detail(body) |> dbg() do
         {:ok, event}
       end
     end)

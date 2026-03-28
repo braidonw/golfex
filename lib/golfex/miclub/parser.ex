@@ -44,11 +44,11 @@ defmodule Golfex.MiClub.Parser do
       doc = SweetXml.parse(xml)
 
       event = %BookingEvent{
-        id: doc |> xpath(~x"//BookingEvent/Id/text()"s) |> to_integer(),
-        active: doc |> xpath(~x"//BookingEvent/Active/text()"s) |> to_boolean(),
+        id: doc |> xpath(~x"//BookingEvent/id/text()"s) |> to_integer(),
+        active: doc |> xpath(~x"//BookingEvent/active/text()"s) |> to_boolean(),
         name: doc |> xpath(~x"//BookingEvent/Name/text()"s),
         date: doc |> xpath(~x"//BookingEvent/Date/text()"s),
-        last_modified: doc |> xpath(~x"//BookingEvent/LastModified/text()"s),
+        last_modified: doc |> xpath(~x"//BookingEvent/lastModified/text()"s),
         booking_sections: parse_sections(doc)
       }
 
@@ -77,8 +77,8 @@ defmodule Golfex.MiClub.Parser do
     |> xpath(~x"//BookingSections/BookingSection"l)
     |> Enum.map(fn section ->
       %BookingSection{
-        id: section |> xpath(~x"./Id/text()"s) |> to_integer(),
-        active: section |> xpath(~x"./Active/text()"s) |> to_boolean(),
+        id: section |> xpath(~x"./id/text()"s) |> to_integer(),
+        active: section |> xpath(~x"./active/text()"s) |> to_boolean(),
         name: section |> xpath(~x"./Name/text()"s),
         booking_groups: parse_groups(section)
       }
@@ -90,10 +90,10 @@ defmodule Golfex.MiClub.Parser do
     |> xpath(~x"./BookingGroups/BookingGroup"l)
     |> Enum.map(fn group ->
       %BookingGroup{
-        id: group |> xpath(~x"./Id/text()"s) |> to_integer(),
+        id: group |> xpath(~x"./id/text()"s) |> to_integer(),
         time: group |> xpath(~x"./Time/text()"s),
         status_code: group |> xpath(~x"./StatusCode/text()"s) |> to_integer(),
-        active: group |> xpath(~x"./Active/text()"s) |> to_boolean(),
+        active: group |> xpath(~x"./active/text()"s) |> to_boolean(),
         require_handicap: group |> xpath(~x"./RequireHandicap/text()"s) |> to_boolean(),
         require_golf_link: group |> xpath(~x"./RequireGolfLink/text()"s) |> to_boolean(),
         visitor_accepted: group |> xpath(~x"./VisitorAccepted/text()"s) |> to_boolean(),
@@ -112,9 +112,9 @@ defmodule Golfex.MiClub.Parser do
     |> xpath(~x"./BookingEntries/BookingEntry"l)
     |> Enum.map(fn entry ->
       %BookingEntry{
-        id: entry |> xpath(~x"./Id/text()"s) |> to_integer(),
-        kind: entry |> xpath(~x"./Type/text()"s),
-        index: entry |> xpath(~x"./Index/text()"s) |> to_integer(),
+        id: entry |> xpath(~x"./@id"s) |> to_integer(),
+        kind: entry |> xpath(~x"./@type"s),
+        index: entry |> xpath(~x"./@index"s) |> to_integer(),
         person_name: entry |> xpath(~x"./PersonName/text()"s),
         membership_number: entry |> xpath(~x"./MembershipNumber/text()"s) |> nilify(),
         gender: entry |> xpath(~x"./Gender/text()"s) |> nilify(),
@@ -124,6 +124,7 @@ defmodule Golfex.MiClub.Parser do
     end)
   end
 
+  defp to_integer(""), do: 0
   defp to_integer(s), do: String.to_integer(s)
   defp to_boolean("true"), do: true
   defp to_boolean(_), do: false
