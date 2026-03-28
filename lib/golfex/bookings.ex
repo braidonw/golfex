@@ -46,8 +46,15 @@ defmodule Golfex.Bookings do
     if ScheduledBooking.cancellable?(booking) do
       if booking.oban_job_id do
         case Repo.get(Oban.Job, booking.oban_job_id) do
-          nil -> :ok
-          job -> Oban.cancel_job(job.id)
+          nil ->
+            :ok
+
+          job ->
+            case Oban.cancel_job(job.id) do
+              {:ok, _} -> :ok
+              {:error, reason} -> {:error, reason}
+              :ok -> :ok
+            end
         end
       end
 

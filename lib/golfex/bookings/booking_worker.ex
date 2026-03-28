@@ -8,6 +8,15 @@ defmodule Golfex.Bookings.BookingWorker do
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"booking_id" => booking_id}}) do
     booking = Bookings.get_scheduled_booking!(booking_id)
+
+    if booking.status == "cancelled" do
+      :ok
+    else
+      execute_booking(booking)
+    end
+  end
+
+  defp execute_booking(booking) do
     user_club = Clubs.get_user_club_by_id!(booking.user_club_id)
 
     Bookings.update_booking_status(booking, "running")
