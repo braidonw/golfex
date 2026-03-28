@@ -22,7 +22,7 @@ defmodule Golfex.BookingsTest do
   defp setup_user_and_club(_context) do
     scope = user_scope_fixture()
     club = club_fixture()
-    user_club = user_club_fixture(scope, club)
+    user_club = user_club_fixture(scope, club) |> Golfex.Repo.preload(:club)
     %{scope: scope, user: scope.user, club: club, user_club: user_club}
   end
 
@@ -89,6 +89,115 @@ defmodule Golfex.BookingsTest do
       bookings = Bookings.list_bookings_for_user(scope)
       assert length(bookings) == 1
       assert hd(bookings).user_id == user.id
+    end
+  end
+
+  describe "book_now/3" do
+    setup [:setup_user_and_club]
+
+    test "resolves first empty slot and books", %{user_club: user_club} do
+      event_detail_xml = """
+      <?xml version="1.0" encoding="utf-8"?>
+      <BookingEvent id="42">
+        <active>true</active>
+        <id>42</id>
+        <Date>2024-01-15T07:00:00</Date>
+        <Name>Saturday Comp</Name>
+        <lastModified>2024-01-10T12:00:00</lastModified>
+        <BookingSections>
+          <BookingSection id="1">
+            <id>1</id>
+            <active>true</active>
+            <Name>Morning</Name>
+            <BookingGroups>
+              <BookingGroup id="456" size="4">
+                <id>456</id>
+                <Time>07:00</Time>
+                <StatusCode>0</StatusCode>
+                <active>true</active>
+                <RequireHandicap>false</RequireHandicap>
+                <RequireGolfLink>false</RequireGolfLink>
+                <VisitorAccepted>false</VisitorAccepted>
+                <MemberAccepted>true</MemberAccepted>
+                <PublicMemberAccepted>false</PublicMemberAccepted>
+                <NineHoles>false</NineHoles>
+                <EighteenHoles>true</EighteenHoles>
+                <BookingEntries>
+                  <BookingEntry id="200" type="member" index="1">
+                    <PersonName>John Smith</PersonName>
+                  </BookingEntry>
+                  <BookingEntry id="201" type="member" index="2">
+                    <PersonName></PersonName>
+                  </BookingEntry>
+                </BookingEntries>
+              </BookingGroup>
+            </BookingGroups>
+          </BookingSection>
+        </BookingSections>
+      </BookingEvent>
+      """
+
+      Req.Test.stub(Golfex.MiClub.Client, fn conn ->
+        case {conn.method, conn.request_path} do
+          {_, "/security/login.msp"} -> Req.Test.json(conn, %{})
+          {"GET", "/spring/bookings/events/42"} -> Req.Test.text(conn, event_detail_xml)
+          {"POST", "/members/Ajax"} -> Req.Test.text(conn, "<Success/>")
+        end
+      end)
+
+      assert :ok = Bookings.book_now(user_club, 42, 456)
+    end
+
+    test "returns error when no empty slots", %{user_club: user_club} do
+      event_detail_xml = """
+      <?xml version="1.0" encoding="utf-8"?>
+      <BookingEvent id="42">
+        <active>true</active>
+        <id>42</id>
+        <Date>2024-01-15T07:00:00</Date>
+        <Name>Saturday Comp</Name>
+        <lastModified>2024-01-10T12:00:00</lastModified>
+        <BookingSections>
+          <BookingSection id="1">
+            <id>1</id>
+            <active>true</active>
+            <Name>Morning</Name>
+            <BookingGroups>
+              <BookingGroup id="456" size="4">
+                <id>456</id>
+                <Time>07:00</Time>
+                <StatusCode>0</StatusCode>
+                <active>true</active>
+                <RequireHandicap>false</RequireHandicap>
+                <RequireGolfLink>false</RequireGolfLink>
+                <VisitorAccepted>false</VisitorAccepted>
+                <MemberAccepted>true</MemberAccepted>
+                <PublicMemberAccepted>false</PublicMemberAccepted>
+                <NineHoles>false</NineHoles>
+                <EighteenHoles>true</EighteenHoles>
+                <BookingEntries>
+                  <BookingEntry id="200" type="member" index="1">
+                    <PersonName>John Smith</PersonName>
+                  </BookingEntry>
+                  <BookingEntry id="201" type="member" index="2">
+                    <PersonName>Jane Doe</PersonName>
+                  </BookingEntry>
+                </BookingEntries>
+              </BookingGroup>
+            </BookingGroups>
+          </BookingSection>
+        </BookingSections>
+      </BookingEvent>
+      """
+
+      Req.Test.stub(Golfex.MiClub.Client, fn conn ->
+        case {conn.method, conn.request_path} do
+          {_, "/security/login.msp"} -> Req.Test.json(conn, %{})
+          {"GET", "/spring/bookings/events/42"} -> Req.Test.text(conn, event_detail_xml)
+        end
+      end)
+
+      assert {:error, :no_empty_slots} = Bookings.book_now(user_club, 42, 456)
     end
   end
 end

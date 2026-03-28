@@ -6,6 +6,20 @@ defmodule Golfex.Bookings do
   alias Golfex.MiClub
   alias Golfex.Repo
 
+  def book_now(user_club, miclub_event_id, group_id) do
+    alias Golfex.MiClub.{BookingEvent, BookingGroup}
+
+    with {:ok, booking_event} <- MiClub.get_event(user_club, miclub_event_id),
+         {group, _section} <- BookingEvent.get_booking_group(booking_event, group_id),
+         {:ok, entry} <- BookingGroup.first_empty_entry(group) do
+      MiClub.book(user_club, group_id, entry.id, user_club.member_id)
+    else
+      nil -> {:error, :group_not_found}
+      :none -> {:error, :no_empty_slots}
+      {:error, _} = error -> error
+    end
+  end
+
   def book_now(user_club, booking_group_id, row_id, member_id) do
     MiClub.book(user_club, booking_group_id, row_id, member_id)
   end
