@@ -83,7 +83,7 @@ defmodule GolfexWeb.ClubLive.FormComponent do
           value={@password}
           label="Password"
         />
-        <.button type="submit" variant="primary">Save Club</.button>
+        <.button type="submit" variant="accent">Save Club</.button>
       </.form>
     </div>
     """

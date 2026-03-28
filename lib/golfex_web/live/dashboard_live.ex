@@ -19,7 +19,7 @@ defmodule GolfexWeb.DashboardLive do
 
       <%= if @user_clubs == [] do %>
         <p>You haven't added any golf clubs yet.</p>
-        <.button navigate={~p"/clubs/new"} class="sc-button">Add a club</.button>
+        <.button navigate={~p"/clubs/new"}>Add a club</.button>
       <% else %>
         <h2>Your Clubs</h2>
         <div class="grid">
