@@ -14,24 +14,22 @@
 @import "./styles/compositions/wrapper.css";
 
 /* Blocks */
+@import "./styles/blocks/accordion.css";
+@import "./styles/blocks/alert.css";
+@import "./styles/blocks/avatar.css";
+@import "./styles/blocks/badge.css";
+@import "./styles/blocks/button.css";
+@import "./styles/blocks/card.css";
+@import "./styles/blocks/checkbox.css";
+@import "./styles/blocks/dialog.css";
 @import "./styles/blocks/dl-stacked.css";
+@import "./styles/blocks/input.css";
 @import "./styles/blocks/navbar.css";
 @import "./styles/blocks/prose.css";
+@import "./styles/blocks/radio-group.css";
+@import "./styles/blocks/select.css";
+@import "./styles/blocks/switch.css";
 
 /* Utilities */
 @import "./styles/utilities/region.css";
 @import "./styles/utilities/visually-hidden.css";
-
-/* UI Components */
-@import "./components/ui/accordion/accordion.css";
-@import "./components/ui/alert/alert.css";
-@import "./components/ui/avatar/avatar.css";
-@import "./components/ui/badge/badge.css";
-@import "./components/ui/button/button.css";
-@import "./components/ui/card/card.css";
-@import "./components/ui/checkbox/checkbox.css";
-@import "./components/ui/dialog/dialog.css";
-@import "./components/ui/input/input.css";
-@import "./components/ui/radio-group/radio-group.css";
-@import "./components/ui/select/select.css";
-@import "./components/ui/switch/switch.css";
