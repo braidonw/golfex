@@ -90,7 +90,11 @@ defmodule GolfexWeb.CoreComponents do
   """
   attr :rest, :global, include: ~w(href navigate patch method download name value disabled)
   attr :class, :any
-  attr :variant, :string, values: ~w(warning accent success error info)
+
+  attr :variant, :string,
+    values: ~w(primary neutral warning accent success error info),
+    default: "primary"
+
   slot :inner_block, required: true
 
   def button(%{rest: rest} = assigns) do
@@ -99,6 +103,7 @@ defmodule GolfexWeb.CoreComponents do
         ["button"]
       end)
       |> assign_new(:variant, fn
+        %{variant: "primary"} -> nil
         %{variant: variant} when is_binary(variant) -> variant
         _ -> nil
       end)
