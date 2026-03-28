@@ -1,6 +1,8 @@
 defmodule Golfex.Accounts.UserToken do
   use Ecto.Schema
+
   import Ecto.Query
+
   alias Golfex.Accounts.UserToken
 
   @hash_algorithm :sha256

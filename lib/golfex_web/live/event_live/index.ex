@@ -37,7 +37,7 @@ defmodule GolfexWeb.EventLive.Index do
     %{user_club: user_club, club: club} = socket.assigns
 
     socket =
-      case Golfex.MiClub.list_events(user_club) |> dbg() do
+      case Golfex.MiClub.list_events(user_club) do
         {:ok, miclub_events} ->
           Events.upsert_events(club, miclub_events)
           events = Events.list_events_for_club(club)

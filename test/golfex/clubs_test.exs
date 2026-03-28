@@ -1,11 +1,11 @@
 defmodule Golfex.ClubsTest do
   use Golfex.DataCase, async: true
 
-  alias Golfex.Clubs
-  alias Golfex.Clubs.{Club, UserClub}
-
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
+
+  alias Golfex.Clubs
+  alias Golfex.Clubs.{Club, UserClub}
 
   describe "clubs" do
     test "create_club/1 with valid data creates a club" do

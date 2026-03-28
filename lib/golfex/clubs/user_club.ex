@@ -1,9 +1,10 @@
 defmodule Golfex.Clubs.UserClub do
   use Ecto.Schema
+
   import Ecto.Changeset
 
-  alias Golfex.Clubs.{Club, EncryptedBinary}
   alias Golfex.Accounts.User
+  alias Golfex.Clubs.{Club, EncryptedBinary}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

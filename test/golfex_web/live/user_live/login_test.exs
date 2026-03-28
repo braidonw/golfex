@@ -1,8 +1,8 @@
 defmodule GolfexWeb.UserLive.LoginTest do
   use GolfexWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   describe "login page" do
     test "renders login page", %{conn: conn} do

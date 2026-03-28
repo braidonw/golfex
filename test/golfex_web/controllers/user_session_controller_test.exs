@@ -2,6 +2,7 @@ defmodule GolfexWeb.UserSessionControllerTest do
   use GolfexWeb.ConnCase, async: true
 
   import Golfex.AccountsFixtures
+
   alias Golfex.Accounts
 
   setup do

@@ -1,5 +1,6 @@
 defmodule Golfex.Events.Event do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}

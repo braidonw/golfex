@@ -1,5 +1,6 @@
 defmodule Golfex.Bookings.ScheduledBooking do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Golfex.Accounts.User

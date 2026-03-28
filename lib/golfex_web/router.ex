@@ -49,6 +49,7 @@ defmodule GolfexWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
+      layout: {GolfexWeb.Layouts, :app},
       on_mount: [{GolfexWeb.UserAuth, :require_authenticated}] do
       live "/", DashboardLive, :index
       live "/clubs", ClubLive.Index, :index
@@ -68,6 +69,7 @@ defmodule GolfexWeb.Router do
     pipe_through [:browser]
 
     live_session :current_user,
+      layout: {GolfexWeb.Layouts, :app},
       on_mount: [{GolfexWeb.UserAuth, :mount_current_scope}] do
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new

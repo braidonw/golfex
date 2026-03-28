@@ -7,18 +7,16 @@ defmodule Golfex.MiClub do
 
   def list_events(user_club) do
     with_session(user_club, fn req, jar ->
-      with {:ok, body} <- Client.get_events(req, jar),
-           {:ok, events} <- Parser.parse_events(body) do
-        {:ok, events}
+      with {:ok, body} <- Client.get_events(req, jar) do
+        Parser.parse_events(body)
       end
     end)
   end
 
   def get_event(user_club, event_id) do
     with_session(user_club, fn req, jar ->
-      with {:ok, body} <- Client.get_event(req, jar, event_id) |> dbg(),
-           {:ok, event} <- Parser.parse_event_detail(body) |> dbg() do
-        {:ok, event}
+      with {:ok, body} <- Client.get_event(req, jar, event_id) do
+        Parser.parse_event_detail(body)
       end
     end)
   end

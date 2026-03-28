@@ -63,7 +63,8 @@ defmodule Golfex.MixProject do
       {:oban, "~> 2.18"},
       {:cloak_ecto, "~> 1.3"},
       {:sweet_xml, "~> 0.7"},
-      {:http_cookie, "~> 0.9.1"}
+      {:http_cookie, "~> 0.9.1"},
+      {:quokka, "~> 2.12", only: [:dev, :test], runtime: false}
     ]
   end
 

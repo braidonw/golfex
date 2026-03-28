@@ -1,9 +1,9 @@
 defmodule GolfexWeb.BookingGroupLive.Show do
   use GolfexWeb, :live_view
 
+  alias Golfex.Bookings
   alias Golfex.Clubs
   alias Golfex.Events
-  alias Golfex.Bookings
   alias Golfex.MiClub.BookingEvent
   alias Golfex.MiClub.BookingGroup
 
@@ -129,7 +129,7 @@ defmodule GolfexWeb.BookingGroupLive.Show do
       <.header>
         {@event.title} — Group Detail
         <:subtitle>
-          {Calendar.strftime(@event.event_date, "%d/%m/%Y")}
+          <strong>Date:</strong> {Calendar.strftime(@event.event_date, "%A %d %B %Y")}
         </:subtitle>
       </.header>
 
@@ -137,21 +137,27 @@ defmodule GolfexWeb.BookingGroupLive.Show do
         <p>Loading group details…</p>
       <% else %>
         <%= if @group do %>
-          <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1">
-            <dt class="font-semibold">Time</dt>
-            <dd>{@group.time}</dd>
-
-            <dt class="font-semibold">Holes</dt>
-            <dd>{BookingGroup.holes(@group) || "—"}</dd>
-
-            <dt class="font-semibold">Members accepted?</dt>
-            <dd>{if @group.member_accepted, do: "Yes", else: "No"}</dd>
-
-            <dt class="font-semibold">Visitors accepted?</dt>
-            <dd>{if @group.visitor_accepted, do: "Yes", else: "No"}</dd>
-
-            <dt class="font-semibold">Handicap Required?</dt>
-            <dd>{if @group.require_handicap, do: "Yes", else: "No"}</dd>
+          <dl class="cluster dl-stacked">
+            <div>
+              <dt>Time</dt>
+              <dd>{@group.time}</dd>
+            </div>
+            <div>
+              <dt>Holes</dt>
+              <dd>{BookingGroup.holes(@group) || "—"}</dd>
+            </div>
+            <div>
+              <dt>Members accepted?</dt>
+              <dd>{if @group.member_accepted, do: "Yes", else: "No"}</dd>
+            </div>
+            <div>
+              <dt>Visitors accepted?</dt>
+              <dd>{if @group.visitor_accepted, do: "Yes", else: "No"}</dd>
+            </div>
+            <div>
+              <dt>Handicap Required?</dt>
+              <dd>{if @group.require_handicap, do: "Yes", else: "No"}</dd>
+            </div>
           </dl>
 
           <h2 class="text-lg font-semibold mt-6">Entries</h2>

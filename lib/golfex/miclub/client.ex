@@ -15,7 +15,6 @@ defmodule Golfex.MiClub.Client do
       {:ok, %Req.Response{status: 200, body: body} = resp} ->
         jar = resp.private[:cookie_jar] || jar
         hidden_fields = extract_hidden_fields(body)
-        dbg({:hidden_fields, hidden_fields})
 
         # Step 2: POST login with credentials + any hidden fields
         # Our explicit values override hidden fields with the same name
@@ -32,8 +31,6 @@ defmodule Golfex.MiClub.Client do
           |> Map.merge(explicit_fields)
           |> Enum.to_list()
 
-        dbg({:form_data, form_data})
-
         case Req.post(req, url: @login_path, form: form_data, cookie_jar: jar) do
           {:ok, %Req.Response{status: status} = resp} when status in 200..399 ->
             jar = resp.private[:cookie_jar] || jar
@@ -41,8 +38,6 @@ defmodule Golfex.MiClub.Client do
             # or the response body won't contain the login form
             body_str = if is_binary(resp.body), do: resp.body, else: ""
             login_succeeded = not String.contains?(body_str, "<title>Highend : Login</title>")
-            dbg({:login_succeeded, login_succeeded, status})
-            dbg({:jar_after_login, jar})
 
             if login_succeeded do
               {:ok, req, jar}

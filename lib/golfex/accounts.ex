@@ -4,9 +4,9 @@ defmodule Golfex.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Golfex.Repo
 
-  alias Golfex.Accounts.{User, UserToken, UserNotifier}
+  alias Golfex.Accounts.{User, UserNotifier, UserToken}
+  alias Golfex.Repo
 
   ## Database getters
 

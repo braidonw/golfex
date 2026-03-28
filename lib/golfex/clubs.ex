@@ -1,9 +1,9 @@
 defmodule Golfex.Clubs do
   import Ecto.Query
 
-  alias Golfex.Repo
   alias Golfex.Accounts.Scope
   alias Golfex.Clubs.{Club, UserClub}
+  alias Golfex.Repo
 
   def list_clubs do
     Repo.all(Club)

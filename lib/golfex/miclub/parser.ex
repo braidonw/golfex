@@ -1,7 +1,7 @@
 defmodule Golfex.MiClub.Parser do
   import SweetXml
 
-  alias Golfex.MiClub.{BookingEvent, BookingSection, BookingGroup, BookingEntry}
+  alias Golfex.MiClub.{BookingEntry, BookingEvent, BookingGroup, BookingSection}
 
   def parse_events(json) do
     case Jason.decode(json) do
@@ -40,22 +40,20 @@ defmodule Golfex.MiClub.Parser do
   end
 
   def parse_event_detail(xml) do
-    try do
-      doc = SweetXml.parse(xml)
+    doc = SweetXml.parse(xml)
 
-      event = %BookingEvent{
-        id: doc |> xpath(~x"//BookingEvent/id/text()"s) |> to_integer(),
-        active: doc |> xpath(~x"//BookingEvent/active/text()"s) |> to_boolean(),
-        name: doc |> xpath(~x"//BookingEvent/Name/text()"s),
-        date: doc |> xpath(~x"//BookingEvent/Date/text()"s),
-        last_modified: doc |> xpath(~x"//BookingEvent/lastModified/text()"s),
-        booking_sections: parse_sections(doc)
-      }
+    event = %BookingEvent{
+      id: doc |> xpath(~x"//BookingEvent/id/text()"s) |> to_integer(),
+      active: doc |> xpath(~x"//BookingEvent/active/text()"s) |> to_boolean(),
+      name: doc |> xpath(~x"//BookingEvent/Name/text()"s),
+      date: doc |> xpath(~x"//BookingEvent/Date/text()"s),
+      last_modified: doc |> xpath(~x"//BookingEvent/lastModified/text()"s),
+      booking_sections: parse_sections(doc)
+    }
 
-      {:ok, event}
-    rescue
-      e -> {:error, Exception.message(e)}
-    end
+    {:ok, event}
+  rescue
+    e -> {:error, Exception.message(e)}
   end
 
   def parse_booking_response(xml) do

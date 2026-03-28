@@ -1,10 +1,10 @@
 defmodule GolfexWeb.EventLiveTest do
   use GolfexWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
   import Golfex.EventsFixtures
+  import Phoenix.LiveViewTest
 
   describe "Index" do
     test "shows cached events for a club", %{conn: conn} do

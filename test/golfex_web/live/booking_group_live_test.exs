@@ -1,10 +1,10 @@
 defmodule GolfexWeb.BookingGroupLiveTest do
   use GolfexWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
   import Golfex.EventsFixtures
+  import Phoenix.LiveViewTest
 
   describe "Show" do
     test "renders loading state on mount", %{conn: conn} do

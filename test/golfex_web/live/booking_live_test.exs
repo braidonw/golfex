@@ -1,9 +1,9 @@
 defmodule GolfexWeb.BookingLiveTest do
   use GolfexWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
+  import Phoenix.LiveViewTest
 
   alias Golfex.Bookings.ScheduledBooking
 

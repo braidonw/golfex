@@ -14,6 +14,7 @@
 @import "./styles/compositions/wrapper.css";
 
 /* Blocks */
+@import "./styles/blocks/dl-stacked.css";
 @import "./styles/blocks/navbar.css";
 @import "./styles/blocks/prose.css";
 

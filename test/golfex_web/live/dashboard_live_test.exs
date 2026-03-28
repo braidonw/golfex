@@ -1,9 +1,9 @@
 defmodule GolfexWeb.DashboardLiveTest do
   use GolfexWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
+  import Phoenix.LiveViewTest
 
   describe "Dashboard" do
     test "redirects to login if not authenticated", %{conn: conn} do

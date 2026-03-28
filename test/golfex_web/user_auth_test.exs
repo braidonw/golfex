@@ -1,12 +1,12 @@
 defmodule GolfexWeb.UserAuthTest do
   use GolfexWeb.ConnCase, async: true
 
-  alias Phoenix.LiveView
+  import Golfex.AccountsFixtures
+
   alias Golfex.Accounts
   alias Golfex.Accounts.Scope
   alias GolfexWeb.UserAuth
-
-  import Golfex.AccountsFixtures
+  alias Phoenix.LiveView
 
   @remember_me_cookie "_golfex_web_user_remember_me"
   @remember_me_cookie_max_age 60 * 60 * 24 * 14
@@ -301,7 +301,7 @@ defmodule GolfexWeb.UserAuthTest do
       user = %{user | authenticated_at: eleven_minutes_ago}
       user_token = Accounts.generate_user_session_token(user)
       {user, token_inserted_at} = Accounts.get_user_by_session_token(user_token)
-      assert DateTime.compare(token_inserted_at, user.authenticated_at) == :gt
+      assert DateTime.after?(token_inserted_at, user.authenticated_at)
       session = conn |> put_session(:user_token, user_token) |> get_session()
 
       socket = %LiveView.Socket{

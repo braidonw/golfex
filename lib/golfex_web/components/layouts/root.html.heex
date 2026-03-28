@@ -15,12 +15,18 @@
     <nav class="navbar">
       <div class="navbar__inner wrapper">
         <.link href={~p"/"} class="navbar__logo" aria-label="Golfex home">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" fill="none" aria-hidden="true" class="navbar__logo-icon">
-            <rect x="14" y="4" width="2.5" height="32" rx="1.25" fill="currentColor"/>
-            <path d="M16.5 4 L36 11 L16.5 18Z" fill="#16a34a"/>
-            <ellipse cx="15" cy="38" rx="11" ry="3" fill="currentColor" opacity="0.3"/>
-            <circle cx="28" cy="34" r="5" fill="currentColor" opacity="0.85"/>
-            <circle cx="26.5" cy="32.5" r="1" fill="white" opacity="0.4"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 44 44"
+            fill="none"
+            aria-hidden="true"
+            class="navbar__logo-icon"
+          >
+            <rect x="14" y="4" width="2.5" height="32" rx="1.25" fill="currentColor" />
+            <path d="M16.5 4 L36 11 L16.5 18Z" fill="#16a34a" />
+            <ellipse cx="15" cy="38" rx="11" ry="3" fill="currentColor" opacity="0.3" />
+            <circle cx="28" cy="34" r="5" fill="currentColor" opacity="0.85" />
+            <circle cx="26.5" cy="32.5" r="1" fill="white" opacity="0.4" />
           </svg>
           <span class="navbar__logo-text">Golf<span class="navbar__logo-accent">ex</span></span>
         </.link>
@@ -31,13 +37,28 @@
           aria-expanded="false"
           phx-click={
             Phoenix.LiveView.JS.toggle(to: "#mobile-nav", display: "flex")
-            |> Phoenix.LiveView.JS.toggle_attribute({"aria-expanded", "true", "false"}, to: "#menu-toggle")
+            |> Phoenix.LiveView.JS.toggle_attribute({"aria-expanded", "true", "false"},
+              to: "#menu-toggle"
+            )
             |> Phoenix.LiveView.JS.toggle_attribute({"data-open", "true"}, to: "#mobile-nav")
           }
           id="menu-toggle"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line
+              x1="3"
+              y1="18"
+              x2="21"
+              y2="18"
+            />
           </svg>
         </button>
 

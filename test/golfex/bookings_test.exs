@@ -1,11 +1,11 @@
 defmodule Golfex.BookingsTest do
   use Golfex.DataCase, async: true
 
-  alias Golfex.Bookings
-  alias Golfex.Bookings.ScheduledBooking
-
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
+
+  alias Golfex.Bookings
+  alias Golfex.Bookings.ScheduledBooking
 
   defp create_booking_attrs(user, user_club) do
     %{

@@ -1,9 +1,10 @@
 defmodule GolfexWeb.UserLive.SettingsTest do
   use GolfexWeb.ConnCase, async: true
 
-  alias Golfex.Accounts
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
+  import Phoenix.LiveViewTest
+
+  alias Golfex.Accounts
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do

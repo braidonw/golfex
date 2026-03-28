@@ -1,0 +1,12 @@
+/*
+DL-STACKED BLOCK
+A definition list where dt/dd pairs are grouped in divs,
+with the term (dt) displayed above the description (dd)
+in a smaller, bold font.
+*/
+
+.dl-stacked dt {
+    font-size: var(--text-sm, 0.875rem);
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--color-text-quiet, inherit);
+}

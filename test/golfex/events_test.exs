@@ -1,10 +1,10 @@
 defmodule Golfex.EventsTest do
   use Golfex.DataCase, async: true
 
-  alias Golfex.Events
-
   import Golfex.ClubsFixtures
   import Golfex.EventsFixtures
+
+  alias Golfex.Events
 
   setup do
     club = club_fixture()

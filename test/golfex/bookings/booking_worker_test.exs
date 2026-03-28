@@ -2,11 +2,11 @@ defmodule Golfex.Bookings.BookingWorkerTest do
   use Golfex.DataCase, async: true
   use Oban.Testing, repo: Golfex.Repo
 
-  alias Golfex.Bookings
-  alias Golfex.Bookings.BookingWorker
-
   import Golfex.AccountsFixtures
   import Golfex.ClubsFixtures
+
+  alias Golfex.Bookings
+  alias Golfex.Bookings.BookingWorker
 
   describe "perform/1" do
     test "executes booking and updates status to completed" do

@@ -1,9 +1,9 @@
 defmodule Golfex.Events do
   import Ecto.Query
 
-  alias Golfex.Repo
-  alias Golfex.Events.Event
   alias Golfex.Clubs.Club
+  alias Golfex.Events.Event
+  alias Golfex.Repo
 
   @cache_max_age_hours 12
 

@@ -1,10 +1,10 @@
 defmodule Golfex.Bookings do
   import Ecto.Query
 
-  alias Golfex.Repo
   alias Golfex.Accounts.Scope
-  alias Golfex.Bookings.{ScheduledBooking, BookingWorker}
+  alias Golfex.Bookings.{BookingWorker, ScheduledBooking}
   alias Golfex.MiClub
+  alias Golfex.Repo
 
   def book_now(user_club, booking_group_id, row_id, member_id) do
     MiClub.book(user_club, booking_group_id, row_id, member_id)

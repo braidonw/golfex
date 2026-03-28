@@ -19,15 +19,15 @@ defmodule GolfexWeb.ConnCase do
 
   using do
     quote do
+      use GolfexWeb, :verified_routes
+
+      import GolfexWeb.ConnCase
+      import Phoenix.ConnTest
+      import Plug.Conn
       # The default endpoint for testing
       @endpoint GolfexWeb.Endpoint
 
-      use GolfexWeb, :verified_routes
-
       # Import conveniences for testing with connections
-      import Plug.Conn
-      import Phoenix.ConnTest
-      import GolfexWeb.ConnCase
     end
   end
 
@@ -51,7 +51,7 @@ defmodule GolfexWeb.ConnCase do
     opts =
       context
       |> Map.take([:token_authenticated_at])
-      |> Enum.into([])
+      |> Enum.to_list()
 
     %{conn: log_in_user(conn, user, opts), user: user, scope: scope}
   end

@@ -18,12 +18,12 @@ defmodule Golfex.DataCase do
 
   using do
     quote do
-      alias Golfex.Repo
-
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import Golfex.DataCase
+
+      alias Golfex.Repo
     end
   end
 

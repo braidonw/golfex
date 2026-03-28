@@ -1,8 +1,8 @@
 defmodule GolfexWeb.UserLive.ConfirmationTest do
   use GolfexWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Golfex.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   alias Golfex.Accounts
 
