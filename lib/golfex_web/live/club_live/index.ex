@@ -48,9 +48,9 @@ defmodule GolfexWeb.ClubLive.Index do
       <.header>
         Clubs
         <:actions>
-          <.link navigate={~p"/clubs/new"}>
-            <.button>Add Club</.button>
-          </.link>
+          <.button variant="warning" navigate={~p"/clubs/new"}>
+            Add Club
+          </.button>
         </:actions>
       </.header>
 

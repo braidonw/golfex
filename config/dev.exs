@@ -29,8 +29,8 @@ config :golfex, GolfexWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:golfex, ~w(--sourcemap=inline --watch)]},
     esbuild_css: {Esbuild, :install_and_run, [:golfex_css, ~w(--watch)]},
     npx:
-      {"npx", ~w(sugarcube generate --watch --silent --force),
-        cd: Path.expand("../assets", __DIR__)}
+      ~w(sugarcube generate --watch --silent --force) ++
+        [cd: Path.expand("../assets", __DIR__)]
   ]
 
 # ## SSL Support

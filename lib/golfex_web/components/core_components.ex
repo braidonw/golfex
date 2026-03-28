@@ -94,22 +94,24 @@ defmodule GolfexWeb.CoreComponents do
   slot :inner_block, required: true
 
   def button(%{rest: rest} = assigns) do
-    variants = %{"primary" => "btn-primary", nil => "btn-primary btn-soft"}
-
     assigns =
       assign_new(assigns, :class, fn ->
-        ["btn", Map.fetch!(variants, assigns[:variant])]
+        ["button"]
+      end)
+      |> assign_new(:variant, fn
+        %{variant: variant} when is_binary(variant) -> variant
+        _ -> nil
       end)
 
     if rest[:href] || rest[:navigate] || rest[:patch] do
       ~H"""
-      <.link class={@class} {@rest}>
+      <.link class={@class} {@rest} data-variant={@variant}>
         {render_slot(@inner_block)}
       </.link>
       """
     else
       ~H"""
-      <button class={@class} {@rest}>
+      <button class={@class} {@rest} data-variant={@variant}>
         {render_slot(@inner_block)}
       </button>
       """

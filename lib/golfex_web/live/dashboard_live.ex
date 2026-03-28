@@ -19,13 +19,15 @@ defmodule GolfexWeb.DashboardLive do
 
       <%= if @user_clubs == [] do %>
         <p>You haven't added any golf clubs yet.</p>
-        <.link navigate={~p"/clubs/new"} class="sc-button">Add a club</.link>
+        <.button navigate={~p"/clubs/new"} class="sc-button">Add a club</.button>
       <% else %>
         <h2>Your Clubs</h2>
         <div class="grid">
           <div :for={uc <- @user_clubs} class="sc-card">
             <h3>{uc.club.name}</h3>
-            <.link navigate={~p"/clubs/#{uc.club_id}/events"} class="sc-button">View Events</.link>
+            <.link class="button" navigate={~p"/clubs/#{uc.club_id}/events"} class="sc-button">
+              View Events
+            </.link>
           </div>
         </div>
       <% end %>
