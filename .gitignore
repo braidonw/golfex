@@ -35,3 +35,6 @@ golfex-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Sugarcube generated files
+/assets/css/global/tokens.variables.gen.css
+

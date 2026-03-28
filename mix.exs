@@ -78,9 +78,15 @@ defmodule Golfex.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["compile", "esbuild golfex", "esbuild golfex_css"],
+      "assets.setup": ["esbuild.install --if-missing", "cmd --cd assets npm install"],
+      "assets.build": [
+        "cmd --cd assets npx sugarcube generate --force --silent",
+        "compile",
+        "esbuild golfex",
+        "esbuild golfex_css"
+      ],
       "assets.deploy": [
+        "cmd --cd assets npx sugarcube generate --force --silent",
         "esbuild golfex --minify",
         "esbuild golfex_css --minify",
         "phx.digest"
