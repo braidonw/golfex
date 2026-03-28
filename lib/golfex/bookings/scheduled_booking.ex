@@ -46,7 +46,6 @@ defmodule Golfex.Bookings.ScheduledBooking do
       :user_id,
       :user_club_id,
       :miclub_group_id,
-      :miclub_row_id,
       :miclub_member_id,
       :scheduled_for
     ])
