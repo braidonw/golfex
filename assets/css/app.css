@@ -1,3 +1,6 @@
+/* Generated Design Tokens */
+@import "./global/tokens.variables.gen.css";
+
 /* Sugarcube Global Styles */
 @import "./styles/global/global.css";
 
