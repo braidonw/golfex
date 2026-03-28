@@ -53,7 +53,14 @@ defmodule Golfex.Events.Event do
       :auto_open_date_time_display,
       :cached_at
     ])
-    |> validate_required([:club_id, :miclub_event_id, :title, :event_date, :availability, :cached_at])
+    |> validate_required([
+      :club_id,
+      :miclub_event_id,
+      :title,
+      :event_date,
+      :availability,
+      :cached_at
+    ])
     |> unique_constraint([:club_id, :miclub_event_id])
   end
 end

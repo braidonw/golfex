@@ -6,7 +6,8 @@ defmodule Golfex.MiClub do
   end
 
   def list_events(user_club) do
-    with {:ok, req} <- Client.login(user_club.club.base_url, user_club.username, user_club.password),
+    with {:ok, req} <-
+           Client.login(user_club.club.base_url, user_club.username, user_club.password),
          {:ok, body} <- Client.get_events(req),
          {:ok, events} <- Parser.parse_events(body) do
       {:ok, events}
@@ -14,7 +15,8 @@ defmodule Golfex.MiClub do
   end
 
   def get_event(user_club, event_id) do
-    with {:ok, req} <- Client.login(user_club.club.base_url, user_club.username, user_club.password),
+    with {:ok, req} <-
+           Client.login(user_club.club.base_url, user_club.username, user_club.password),
          {:ok, body} <- Client.get_event(req, event_id),
          {:ok, event} <- Parser.parse_event_detail(body) do
       {:ok, event}
@@ -22,7 +24,8 @@ defmodule Golfex.MiClub do
   end
 
   def book(user_club, booking_group_id, row_id, member_id) do
-    with {:ok, req} <- Client.login(user_club.club.base_url, user_club.username, user_club.password),
+    with {:ok, req} <-
+           Client.login(user_club.club.base_url, user_club.username, user_club.password),
          {:ok, body} <- Client.book(req, booking_group_id, row_id, member_id) do
       Parser.parse_booking_response(body)
     end

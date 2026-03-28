@@ -8,7 +8,11 @@ defmodule GolfexWeb.BookingGroupLive.Show do
   alias Golfex.MiClub.BookingGroup
 
   @impl true
-  def mount(%{"club_id" => club_id, "event_id" => event_id, "group_id" => group_id}, _session, socket) do
+  def mount(
+        %{"club_id" => club_id, "event_id" => event_id, "group_id" => group_id},
+        _session,
+        socket
+      ) do
     group_id = String.to_integer(group_id)
     user_club = Clubs.get_user_club_by_club_id!(socket.assigns.current_scope, club_id)
     event = Events.get_event!(event_id)
@@ -152,13 +156,21 @@ defmodule GolfexWeb.BookingGroupLive.Show do
 
           <h2 class="text-lg font-semibold mt-6">Entries</h2>
 
-          <.table id="entries" rows={@group.booking_entries} row_id={fn entry -> "entry-#{entry.id}" end}>
+          <.table
+            id="entries"
+            rows={@group.booking_entries}
+            row_id={fn entry -> "entry-#{entry.id}" end}
+          >
             <:col :let={entry} label="#">{entry.index}</:col>
             <:col :let={entry} label="Name">{entry.person_name || "—"}</:col>
             <:col :let={entry} label="Handicap">{entry.handicap || "—"}</:col>
             <:col :let={entry} label="Membership">{entry.membership_number || "—"}</:col>
             <:action :let={entry}>
-              <button phx-click="book_now" phx-value-row_id={entry.id} data-confirm="Book this slot now?">
+              <button
+                phx-click="book_now"
+                phx-value-row_id={entry.id}
+                data-confirm="Book this slot now?"
+              >
                 Book
               </button>
             </:action>

@@ -141,8 +141,11 @@ defmodule Golfex.MiClubTest do
     test "returns error when booking fails", ctx do
       Req.Test.expect(Golfex.MiClub.Client, 2, fn conn ->
         case conn.request_path do
-          "/security/login.msp" -> ctx.login_response.(conn)
-          "/members/Ajax" -> Req.Test.text(conn, "<Error><ErrorText>Booking is full</ErrorText></Error>")
+          "/security/login.msp" ->
+            ctx.login_response.(conn)
+
+          "/members/Ajax" ->
+            Req.Test.text(conn, "<Error><ErrorText>Booking is full</ErrorText></Error>")
         end
       end)
 

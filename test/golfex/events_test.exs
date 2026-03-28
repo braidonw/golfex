@@ -14,8 +14,20 @@ defmodule Golfex.EventsTest do
   describe "upsert_events/2" do
     test "inserts new events", %{club: club} do
       miclub_events = [
-        %{id: 100, title: "Saturday Comp", event_date: ~D[2026-04-01], availability: 20, is_open: true},
-        %{id: 101, title: "Sunday Comp", event_date: ~D[2026-04-02], availability: 15, is_open: false}
+        %{
+          id: 100,
+          title: "Saturday Comp",
+          event_date: ~D[2026-04-01],
+          availability: 20,
+          is_open: true
+        },
+        %{
+          id: 101,
+          title: "Sunday Comp",
+          event_date: ~D[2026-04-02],
+          availability: 15,
+          is_open: false
+        }
       ]
 
       assert {2, _} = Events.upsert_events(club, miclub_events)
@@ -27,13 +39,25 @@ defmodule Golfex.EventsTest do
 
     test "updates existing events on re-sync", %{club: club} do
       miclub_events = [
-        %{id: 200, title: "Original Title", event_date: ~D[2026-04-01], availability: 10, is_open: false}
+        %{
+          id: 200,
+          title: "Original Title",
+          event_date: ~D[2026-04-01],
+          availability: 10,
+          is_open: false
+        }
       ]
 
       assert {1, _} = Events.upsert_events(club, miclub_events)
 
       updated_events = [
-        %{id: 200, title: "Updated Title", event_date: ~D[2026-04-01], availability: 5, is_open: true}
+        %{
+          id: 200,
+          title: "Updated Title",
+          event_date: ~D[2026-04-01],
+          availability: 5,
+          is_open: true
+        }
       ]
 
       assert {1, _} = Events.upsert_events(club, updated_events)

@@ -64,7 +64,7 @@ defmodule GolfexWeb.EventLive.Index do
         Events — {@club.name}
         <:actions>
           <.button phx-click="refresh" disabled={@loading}>
-            <%= if @loading, do: "Syncing…", else: "Refresh" %>
+            {if @loading, do: "Syncing…", else: "Refresh"}
           </.button>
         </:actions>
       </.header>
@@ -82,7 +82,7 @@ defmodule GolfexWeb.EventLive.Index do
           <:col :let={event} label="Status">{event.event_status_code_friendly}</:col>
           <:col :let={event} label="Availability">{event.availability}</:col>
           <:col :let={event} label="Open?">
-            <%= if event.is_open, do: "Yes", else: "No" %>
+            {if event.is_open, do: "Yes", else: "No"}
           </:col>
           <:action :let={event}>
             <.link navigate={~p"/clubs/#{@club.id}/events/#{event.id}"}>View</.link>

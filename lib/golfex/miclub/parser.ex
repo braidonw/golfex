@@ -98,7 +98,8 @@ defmodule Golfex.MiClub.Parser do
         require_golf_link: group |> xpath(~x"./RequireGolfLink/text()"s) |> to_boolean(),
         visitor_accepted: group |> xpath(~x"./VisitorAccepted/text()"s) |> to_boolean(),
         member_accepted: group |> xpath(~x"./MemberAccepted/text()"s) |> to_boolean(),
-        public_member_accepted: group |> xpath(~x"./PublicMemberAccepted/text()"s) |> to_boolean(),
+        public_member_accepted:
+          group |> xpath(~x"./PublicMemberAccepted/text()"s) |> to_boolean(),
         nine_holes: group |> xpath(~x"./NineHoles/text()"s) |> to_boolean(),
         eighteen_holes: group |> xpath(~x"./EighteenHoles/text()"s) |> to_boolean(),
         booking_entries: parse_entries(group)

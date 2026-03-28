@@ -19,9 +19,7 @@ import Config
 if config_env() in [:dev, :test] do
   config :golfex, Golfex.Vault,
     ciphers: [
-      default:
-        {Cloak.Ciphers.AES.GCM,
-         tag: "AES.GCM.V1", key: :crypto.strong_rand_bytes(32)}
+      default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: :crypto.strong_rand_bytes(32)}
     ]
 end
 

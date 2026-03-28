@@ -16,6 +16,8 @@ defmodule Golfex.Clubs.Club do
     club
     |> cast(attrs, [:name, :base_url])
     |> validate_required([:name, :base_url])
-    |> validate_format(:base_url, ~r/^https?:\/\//, message: "must start with http:// or https://")
+    |> validate_format(:base_url, ~r/^https?:\/\//,
+      message: "must start with http:// or https://"
+    )
   end
 end

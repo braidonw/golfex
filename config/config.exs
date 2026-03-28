@@ -54,8 +54,7 @@ config :esbuild,
     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ],
   golfex_css: [
-    args:
-      ~w(css/app.css --bundle --outdir=../priv/static/assets/css),
+    args: ~w(css/app.css --bundle --outdir=../priv/static/assets/css),
     cd: Path.expand("../assets", __DIR__)
   ]
 
