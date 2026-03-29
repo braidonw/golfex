@@ -175,13 +175,18 @@ defmodule GolfexWeb.BookingGroupLive.Show do
 
           <div class="mt-6">
             <%= if @event.is_open do %>
-              <button
-                phx-click="book_now"
-                data-confirm="Book the first available slot now?"
-                class="rounded-lg bg-zinc-900 px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-700"
-              >
-                Book Now
-              </button>
+              <%= case BookingGroup.first_empty_entry(@group) do %>
+                <% :none -> %>
+                  <p class="text-sm text-gray-500">This group is full.</p>
+                <% {:ok, _} -> %>
+                  <button
+                    phx-click="book_now"
+                    data-confirm="Book the first available slot now?"
+                    class="rounded-lg bg-zinc-900 px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-700"
+                  >
+                    Book Now
+                  </button>
+              <% end %>
             <% else %>
               <div class="p-4 border rounded">
                 <h3 class="text-base font-semibold mb-4">Schedule Booking</h3>
@@ -194,7 +199,7 @@ defmodule GolfexWeb.BookingGroupLive.Show do
                       type="datetime-local"
                       id="scheduled_for"
                       name="scheduled_for"
-                      value={format_schedule_default(@event.auto_open_date_time_display)}
+                      value={dbg(format_schedule_default(@event.auto_open_date_time_display))}
                       required
                       class="rounded border-gray-300"
                     />
@@ -210,25 +215,30 @@ defmodule GolfexWeb.BookingGroupLive.Show do
     """
   end
 
-  # Attempt to convert autoOpenDateTimeDisplay (e.g. "15/01/2024 7:00 AM")
-  # into datetime-local format ("2024-01-15T07:00") for the input default value.
+  # Convert autoOpenDateTimeDisplay into datetime-local format for the input default.
+  # Handles "DD-MM-YYYY HH:mm" (24h) and "DD/MM/YYYY h:mm AM/PM" (12h) formats.
   # Returns nil if parsing fails — the input will just be empty.
   defp format_schedule_default(nil), do: nil
 
   defp format_schedule_default(display_string) do
-    # MiClub format: "DD/MM/YYYY h:mm AM/PM"
-    case Regex.run(
-           ~r/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i,
-           display_string
-         ) do
-      [_, day, month, year, hour, minute, ampm] ->
+    cond do
+      # 24-hour format: "DD-MM-YYYY HH:mm"
+      match = Regex.run(~r/(\d{1,2})-(\d{1,2})-(\d{4})\s+(\d{1,2}):(\d{2})/, display_string) ->
+        [_, day, month, year, hour, minute] = match
+
+        "#{year}-#{String.pad_leading(month, 2, "0")}-#{String.pad_leading(day, 2, "0")}T#{String.pad_leading(hour, 2, "0")}:#{minute}"
+
+      # 12-hour format: "DD/MM/YYYY h:mm AM/PM"
+      match =
+          Regex.run(~r/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i, display_string) ->
+        [_, day, month, year, hour, minute, ampm] = match
         hour = String.to_integer(hour)
         hour = if String.upcase(ampm) == "PM" and hour != 12, do: hour + 12, else: hour
         hour = if String.upcase(ampm) == "AM" and hour == 12, do: 0, else: hour
 
         "#{year}-#{String.pad_leading(month, 2, "0")}-#{String.pad_leading(day, 2, "0")}T#{String.pad_leading(Integer.to_string(hour), 2, "0")}:#{minute}"
 
-      _ ->
+      true ->
         nil
     end
   end
