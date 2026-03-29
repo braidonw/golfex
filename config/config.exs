@@ -42,6 +42,7 @@ config :golfex, GolfexWeb.Endpoint,
   live_view: [signing_salt: "jm+pfYLm"]
 
 config :golfex, Oban,
+  engine: Oban.Engines.Lite,
   repo: Golfex.Repo,
   queues: [bookings: 1]
 

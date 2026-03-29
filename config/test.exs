@@ -13,15 +13,11 @@ config :bcrypt_elixir, :log_rounds, 1
 config :golfex, Golfex.Mailer, adapter: Swoosh.Adapters.Test
 
 config :golfex, Golfex.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  port: 54321,
-  database: "golfex_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: Path.expand("../golfex_test#{System.get_env("MIX_TEST_PARTITION")}.db", __DIR__),
   pool: Ecto.Adapters.SQL.Sandbox,
-  # We don't run a server during test. If one is required,
-  # you can enable the server option below.
-  pool_size: System.schedulers_online() * 2
+  pool_size: 1,
+  journal_mode: :wal,
+  busy_timeout: 5000
 
 config :golfex, GolfexWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],

@@ -39,3 +39,8 @@ npm-debug.log
 /assets/css/global/tokens.variables.gen.css
 
 .worktrees/
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
