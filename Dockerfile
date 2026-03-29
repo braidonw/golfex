@@ -32,6 +32,7 @@ COPY --chown=builder:builder assets assets
 COPY --chown=builder:builder rel rel
 
 RUN cd assets && npm install
+RUN cd assets && npx sugarcube generate --force --silent
 RUN mix compile
 RUN mix assets.deploy
 
