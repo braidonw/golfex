@@ -230,7 +230,10 @@ defmodule GolfexWeb.BookingGroupLive.Show do
 
       # 12-hour format: "DD/MM/YYYY h:mm AM/PM"
       match =
-          Regex.run(~r/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i, display_string) ->
+          Regex.run(
+            ~r/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i,
+            display_string
+          ) ->
         [_, day, month, year, hour, minute, ampm] = match
         hour = String.to_integer(hour)
         hour = if String.upcase(ampm) == "PM" and hour != 12, do: hour + 12, else: hour

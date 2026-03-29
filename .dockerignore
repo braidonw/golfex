@@ -1,0 +1,24 @@
+# Ignore build artifacts and deps
+/_build/
+/deps/
+/cover/
+/doc/
+
+# Ignore dev/test databases
+*.db
+*.db-shm
+*.db-wal
+
+# Ignore node_modules
+/assets/node_modules/
+
+# Ignore git and editor files
+.git
+.gitignore
+.worktrees/
+
+# Ignore docs and plans
+/docs/
+
+# Ignore test files in production build
+/test/
